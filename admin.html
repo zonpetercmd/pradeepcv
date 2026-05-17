@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Pradeep Kumar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .header { background: #D4AF37; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
+        .card h2 { color: #D4AF37; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: none; background: #2a2a2a; color: white; }
+        button { background: #D4AF37; color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-right: 10px; }
+        .exp-item, .review-item { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-lock"></i> Admin Panel</h1>
+        <div>
+            <a href="/" style="color:#0a0a0a; margin-right:15px;">View Site</a>
+            <button id="logoutBtn">Logout</button>
+        </div>
+    </div>
+    
+    <div id="msg" style="color:#4ade80; margin-bottom:15px;"></div>
+    
+    <div class="card">
+        <h2>Profile & Basic Info</h2>
+        <input type="text" id="fullName" placeholder="Full Name">
+        <input type="text" id="about" placeholder="About Me">
+        <input type="text" id="photoUrl" placeholder="Photo URL (Upload to imgbb or any hosting)">
+        <input type="text" id="phone" placeholder="Phone">
+        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="location" placeholder="Location">
+        <input type="url" id="linkedin" placeholder="LinkedIn URL">
+    </div>
+    
+    <div class="grid-2col">
+        <div class="card">
+            <h2>Skills (comma separated)</h2>
+            <input type="text" id="skills" placeholder="Tally, GST, TDS, Legal Drafting">
+        </div>
+        <div class="card">
+            <h2>Services</h2>
+            <div id="servicesList"></div>
+            <button onclick="addService()">+ Add Service</button>
+        </div>
+    </div>
+    
+    <div class="grid-2col">
+        <div class="card">
+            <h2>Experience</h2>
+            <div id="expList"></div>
+            <button onclick="addExperience()">+ Add Experience</button>
+        </div>
+        <div class="card">
+            <h2>Client Reviews</h2>
+            <div id="reviewsList"></div>
+            <button onclick="addReview()">+ Add Review</button>
+        </div>
+    </div>
+    
+    <div class="card">
+        <h2>Chat Messages <i class="fas fa-comments"></i></h2>
+        <div id="chatMessages" style="max-height:400px; overflow-y:auto;"></div>
+    </div>
+    
+    <div class="card">
+        <button id="saveAllBtn"><i class="fas fa-save"></i> Save All Changes</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        authDomain: "pradeep-cv-1299a.firebaseapp.com",
+        databaseURL: "https://pradeep-cv-1299a-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "pradeep-cv-1299a",
+        storageBucket: "pradeep-cv-1299a.appspot.com"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    
+    // Check admin access
+    if(!localStorage.getItem('admin_auth')) {
+        const pwd = prompt('Enter Admin Password:');
+        if(pwd === 'admin123') {
+            localStorage.setItem('admin_auth', 'true');
+        } else {
+            alert('Access Denied!');
+            window.location.href = '/';
+        }
+    }
+    
+    let services = [];
+    let experiences = [];
+    let reviews = [];
+    
+    function loadData() {
+        database.ref('public_data').once('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            document.getElementById('fullName').value = data.fullName || '';
+            document.getElementById('about').value = data.about || '';
+            document.getElementById('photoUrl').value = data.photoUrl || '';
+            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('location').value = data.location || '';
+            document.getElementById('linkedin').value = data.linkedin || '';
+            document.getElementById('skills').value = (data.skills || []).join(', ');
+            
+            services = data.services || [
+                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions" },
+                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting" }
+            ];
+            experiences = data.experiences || [];
+            reviews = data.reviews || [];
+            
+            renderServices();
+            renderExperiences();
+            renderReviews();
+        });
+        
+        // Load chat messages
+        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
+            const messages = [];
+            snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = messages.map(m => `
+                <div style="background:#2a2a2a; padding:10px; margin-bottom:10px; border-radius:10px;">
+                    <strong>${m.userName}</strong> (${new Date(m.timestamp).toLocaleString()})<br>
+                    ${m.message}
+                    <button onclick="replyToChat('${m.userId}', '${m.userName}')" style="margin-top:5px; padding:5px 10px;">Reply</button>
+                </div>
+            `).join('');
+        });
+    }
+    
+    function renderServices() {
+        const container = document.getElementById('servicesList');
+        container.innerHTML = services.map((s, i) => `
+            <div class="exp-item">
+                <input type="text" value="${s.icon}" placeholder="Icon class" onchange="updateService(${i}, 'icon', this.value)">
+                <input type="text" value="${s.title}" placeholder="Title" onchange="updateService(${i}, 'title', this.value)">
+                <input type="text" value="${s.desc}" placeholder="Description" onchange="updateService(${i}, 'desc', this.value)">
+                <button onclick="removeService(${i})" style="background:#dc2626;">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    function renderExperiences() {
+        const container = document.getElementById('expList');
+        container.innerHTML = experiences.map((exp, i) => `
+            <div class="exp-item">
+                <input type="text" value="${exp.year}" placeholder="Year" onchange="updateExp(${i}, 'year', this.value)">
+                <input type="text" value="${exp.title}" placeholder="Title" onchange="updateExp(${i}, 'title', this.value)">
+                <input type="text" value="${exp.company}" placeholder="Company" onchange="updateExp(${i}, 'company', this.value)">
+                <textarea placeholder="Description" onchange="updateExp(${i}, 'desc', this.value)">${exp.desc}</textarea>
+                <button onclick="removeExp(${i})" style="background:#dc2626;">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    function renderReviews() {
+        const container = document.getElementById('reviewsList');
+        container.innerHTML = reviews.map((r, i) => `
+            <div class="exp-item">
+                <input type="text" value="${r.name}" placeholder="Name" onchange="updateReview(${i}, 'name', this.value)">
+                <textarea placeholder="Review" onchange="updateReview(${i}, 'text', this.value)">${r.text}</textarea>
+                <button onclick="removeReview(${i})" style="background:#dc2626;">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    window.updateService = (i, field, val) => { services[i][field] = val; renderServices(); };
+    window.updateExp = (i, field, val) => { experiences[i][field] = val; };
+    window.updateReview = (i, field, val) => { reviews[i][field] = val; };
+    window.addService = () => { services.push({ icon: "fa-star", title: "New Service", desc: "Description" }); renderServices(); };
+    window.addExperience = () => { experiences.push({ year: "2024", title: "New Role", company: "Company", desc: "Description" }); renderExperiences(); };
+    window.addReview = () => { reviews.push({ name: "Client Name", text: "Review text" }); renderReviews(); };
+    window.removeService = (i) => { services.splice(i,1); renderServices(); };
+    window.removeExp = (i) => { experiences.splice(i,1); renderExperiences(); };
+    window.removeReview = (i) => { reviews.splice(i,1); renderReviews(); };
+    window.replyToChat = (userId, userName) => {
+        const reply = prompt(`Reply to ${userName}:`);
+        if(reply) {
+            database.ref('chats').push({
+                userId: userId,
+                userName: "Admin (Pradeep)",
+                message: reply,
+                timestamp: Date.now(),
+                read: false
+            });
+            alert('Reply sent!');
+        }
+    };
+    
+    document.getElementById('saveAllBtn').addEventListener('click', async () => {
+        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim());
+        
+        const data = {
+            fullName: document.getElementById('fullName').value,
+            about: document.getElementById('about').value,
+            photoUrl: document.getElementById('photoUrl').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            location: document.getElementById('location').value,
+            linkedin: document.getElementById('linkedin').value,
+            skills: skillsArray,
+            services: services,
+            experiences: experiences,
+            reviews: reviews
+        };
+        
+        await database.ref('public_data').set(data);
+        document.getElementById('msg').innerHTML = '✅ All changes saved successfully!';
+        setTimeout(() => document.getElementById('msg').innerHTML = '', 3000);
+    });
+    
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('admin_auth');
+        window.location.href = '/';
+    });
+    
+    loadData();
+</script>
+</body>
+</html>
