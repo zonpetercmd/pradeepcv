@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pradeep Kumar - Professional CV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: 'Segoe UI', 'Lato', 'Calibri', 'Garamond', serif;
+        }
+
+        /* Booklet Style Card */
+        .booklet {
+            max-width: 1100px;
+            width: 100%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        /* Inner 2-Column Layout */
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        /* Left Column - Dark Professional */
+        .left-col {
+            background-color: #0f2b3d;
+            color: #f0f4f8;
+            width: 34%;
+            padding: 32px 24px;
+        }
+
+        /* Right Column - White Clean */
+        .right-col {
+            background-color: #ffffff;
+            width: 66%;
+            padding: 32px 28px;
+            color: #1e293b;
+        }
+
+        /* Profile Name */
+        .name {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-bottom: 3px solid #eab308;
+            display: inline-block;
+            padding-bottom: 6px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .tagline {
+            font-size: 15px;
+            color: #cbd5e1;
+            margin-bottom: 28px;
+            line-height: 1.4;
+        }
+
+        /* Section Headings */
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin: 28px 0 14px 0;
+            border-left: 4px solid #eab308;
+            padding-left: 12px;
+        }
+
+        .left-col .section-title {
+            color: #facc15;
+            border-left-color: #facc15;
+        }
+
+        .right-col .section-title {
+            color: #0f2b3d;
+            border-left-color: #0f2b3d;
+        }
+
+        /* Contact items */
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #e2e8f0;
+            flex-wrap: wrap;
+        }
+
+        /* Skills & Lists */
+        .skill-list {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .skill-list li {
+            margin-bottom: 10px;
+            font-size: 13px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .skill-list li strong {
+            min-width: 110px;
+            font-weight: 600;
+            color: #facc15;
+        }
+
+        .edu-item {
+            margin-bottom: 14px;
+        }
+
+        .edu-degree {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .edu-detail {
+            font-size: 12px;
+            color: #cbd5e6;
+        }
+
+        /* Experience */
+        .exp-item {
+            margin-bottom: 28px;
+        }
+
+        .exp-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f2b3d;
+        }
+
+        .exp-company {
+            font-weight: 600;
+            color: #334155;
+            margin: 4px 0 6px 0;
+            font-size: 14px;
+        }
+
+        .exp-date {
+            font-size: 12px;
+            color: #eab308;
+            background: #fef9e3;
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .exp-desc {
+            list-style: none;
+            margin-top: 8px;
+        }
+
+        .exp-desc li {
+            font-size: 13.5px;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.45;
+        }
+
+        .exp-desc li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: #eab308;
+            font-weight: bold;
+        }
+
+        .achievement-badge {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin: 20px 0 16px 0;
+            font-size: 13px;
+            border-left: 4px solid #eab308;
+        }
+
+        hr {
+            margin: 16px 0;
+            border: 0;
+            height: 1px;
+            background: #334155;
+            opacity: 0.2;
+        }
+
+        .legal-note {
+            font-size: 11px;
+            text-align: center;
+            padding: 12px;
+            background: #f8fafc;
+            color: #475569;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        @media (max-width: 750px) {
+            .left-col, .right-col {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="booklet">
+    <div class="two-columns">
+        <!-- LEFT COLUMN (Dark) -->
+        <div class="left-col">
+            <div class="name">PRADEEP KUMAR</div>
+            <div class="tagline">Accountant | Compliance Specialist | Legal Support</div>
+
+            <div class="contact-item">📍 Balaji High-Tech City-2, Kanwarpura Road, Sikar - 332001</div>
+            <div class="contact-item">📞 8955152133 | 8502000060</div>
+            <div class="contact-item">✉️ pradeep.jat1996@gmail.com</div>
+            <div class="contact-item">🎂 27 Feb 1996 &nbsp; | &nbsp; 🟢 Immediate Joining</div>
+
+            <div class="section-title">PROFESSIONAL SUMMARY</div>
+            <p style="font-size: 13px; line-height: 1.5;">Detail-oriented Accountant with 7+ years of experience in Accounting, Compliance & Legal support. Expert in Tally Prime, GST, TDS, PF, ESIC, Banking, and Notice drafting. Seeking an on-site role where multi-disciplinary finance + legal skills add value.</p>
+
+            <div class="section-title">CORE SKILLS</div>
+            <ul class="skill-list">
+                <li><strong>Accounting & ERP</strong> Tally Prime, BRS, Cash, Billing, MIS</li>
+                <li><strong>Statutory Compliance</strong> GSTR-1, GSTR-3B, TDS, PF, ESIC</li>
+                <li><strong>Legal Documentation</strong> Stamp Preparation, Agreement, Notice Reply</li>
+                <li><strong>Tools</strong> MS Excel, MS Word, Email Drafting</li>
+            </ul>
+
+            <div class="section-title">EDUCATION</div>
+            <div class="edu-item">
+                <div class="edu-degree">M.Com</div>
+                <div class="edu-detail">Pandit Deendayal Upadhyaya University, Sikar – 59.67%</div>
+            </div>
+            <div class="edu-item">
+                <div class="edu-degree">LLB (Bachelor of Laws)</div>
+                <div class="edu-detail">Pandit Deendayal Upadhyaya University, Sikar – 54.5%</div>
+            </div>
+
+            <div class="section-title">LANGUAGES</div>
+            <div class="contact-item">🇮🇳 Hindi (Native)</div>
+            <div class="contact-item">🇬🇧 English (Professional Proficiency)</div>
+        </div>
+
+        <!-- RIGHT COLUMN (White) -->
+        <div class="right-col">
+            <div class="section-title">WORK EXPERIENCE</div>
+            <div class="exp-item">
+                <div class="exp-title">Accountant / Accounts Executive</div>
+                <div class="exp-company">🏢 Matrix Education, Sikar</div>
+                <div class="exp-date">04 August 2021 – 31 January 2026</div>
+                <ul class="exp-desc">
+                    <li>Maintained day-to-day accounting in Tally Prime – 100% error-free records</li>
+                    <li>Handled billing, cash management and payment entries for multiple branches</li>
+                    <li>Prepared GST data and supported GSTR-1, GSTR-3B filings</li>
+                    <li>Filed TDS, PF & ESIC returns – zero penalty track record</li>
+                    <li>Executed bank transactions & BRS – reconciled 500+ entries monthly</li>
+                    <li>Assisted in legal documentation – stamp paper, agreements, notices</li>
+                    <li>Drafted notice replies & legal compliance docs for vendor/regulatory matters</li>
+                    <li>Generated MIS & financial reports for management review</li>
+                </ul>
+            </div>
+
+            <div class="section-title">KEY ACHIEVEMENTS</div>
+            <div class="achievement-badge">
+                🏅 Reduced GST reconciliation errors by 30%<br>
+                📉 Ensured 100% on-time TDS/PF filing for 2 years<br>
+                ⚖️ Successfully supported 10+ legal notice replies<br>
+                📁 Digitized agreement & legal document records
+            </div>
+
+            <div class="section-title">WORK PREFERENCE</div>
+            <ul class="exp-desc" style="margin-bottom: 8px;">
+                <li>✅ Full-Time, On-Site</li>
+                <li>✅ Immediate Joining</li>
+            </ul>
+            <hr>
+            <div style="font-size: 13px; text-align: right; margin-top: 10px;">TOTAL EXPERIENCE: 7+ Years (Accounting & Compliance)</div>
+        </div>
+    </div>
+    <div class="legal-note">
+        📄 Professional Accountant & Compliance Profile | Booklet Style CV
+    </div>
+</div>
+</body>
+</html>
