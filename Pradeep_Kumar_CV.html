@@ -4,251 +4,432 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pradeep Kumar | Accountant & Legal Expert</title>
+    <!-- Google Fonts & FontAwesome Icons for Advance Look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+        :root {
+            --primary: #0f2b3d;
+            --secondary: #1a4a6f;
+            --accent: #eab308;
+            --text-light: #f3f4f6;
+            --bg-card: #ffffff;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #0f2b3d 0%, #1a4a6f 100%);
-            font-family: 'Segoe UI', 'Calibri', sans-serif;
-            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #333;
             min-height: 100vh;
+            padding: 40px 20px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
-        .header {
-            background: white;
-            border-radius: 24px;
-            padding: 35px;
+        /* Top Bar for Analytics */
+        .analytics-bar {
             text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .counter-badge {
+            background: rgba(255, 255, 255, 0.15);
+            color: var(--accent);
+            padding: 10px 24px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Profile Header */
+        .profile-card {
+            background: var(--bg-card);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             margin-bottom: 30px;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .header h1 {
-            font-size: 48px;
-            color: #0f2b3d;
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, var(--accent), #f59e0b);
         }
 
-        .header p {
-            font-size: 18px;
-            color: #2c5a7a;
-            margin: 10px 0;
+        .profile-card h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
-        .badge {
-            background: #eab308;
+        .profile-card p {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        .status-badge {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 6px 16px;
+            border-radius: 50px;
             display: inline-block;
-            padding: 8px 24px;
-            border-radius: 40px;
-            font-weight: bold;
-            margin-top: 12px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .stats {
-            display: flex;
-            flex-wrap: wrap;
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
 
-        .stat-card {
-            background: white;
-            flex: 1;
-            padding: 20px;
+        .stat-item {
+            background: var(--bg-card);
+            padding: 25px;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
         }
 
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: #eab308;
+        .stat-item:hover {
+            transform: translateY(-5px);
         }
 
-        .grid {
+        .stat-item i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .stat-val {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Main Grid Structure */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 850px) {
+            .main-layout { grid-template-columns: 1fr; }
+        }
+
+        .column {
             display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
+            flex-direction: column;
+            gap: 30px;
         }
 
         .card {
-            background: white;
-            flex: 1;
-            min-width: 280px;
-            padding: 25px;
+            background: var(--bg-card);
             border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
         }
 
         .card h2 {
-            border-left: 5px solid #eab308;
-            padding-left: 15px;
+            color: var(--primary);
+            font-size: 1.4rem;
             margin-bottom: 20px;
-            color: #0f2b3d;
-        }
-
-        .skill-tag {
-            background: #eef2ff;
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 20px;
-            margin: 5px;
-            font-size: 13px;
-        }
-
-        button {
-            background: #0f2b3d;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 30px;
-            width: 100%;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        button:hover {
-            background: #eab308;
-            color: #0f2b3d;
-        }
-
-        .timeline-item {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eef2f6;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f1f5f9;
             padding-bottom: 10px;
         }
 
-        .year {
-            font-weight: bold;
-            color: #eab308;
-            min-width: 85px;
+        .card h2 i { color: var(--accent); }
+
+        /* Contact Info list */
+        .contact-list { list-style: none; }
+        .contact-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+        .contact-list li i {
+            color: var(--secondary);
+            width: 20px;
+        }
+
+        /* Skill Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            background: #f1f5f9;
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .skill-tag:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Timeline styling */
+        .timeline {
+            position: relative;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 20px;
+            margin-left: 10px;
+        }
+
+        .timeline-node {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-node::before {
+            content: '';
+            position: absolute;
+            left: -27px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid white;
+        }
+
+        .time-period {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .time-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 15px;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: var(--accent);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
         }
 
         footer {
             text-align: center;
-            color: white;
-            margin-top: 40px;
-            font-size: 12px;
-        }
-
-        /* Live Counter Styling */
-        .views-counter {
-            background: rgba(255, 255, 255, 0.15);
-            color: #eab308;
-            padding: 8px 20px;
-            border-radius: 30px;
-            display: inline-block;
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 16px;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            backdrop-filter: blur(5px);
-        }
-
-        @media (max-width: 700px) {
-            .header h1 { font-size: 32px; }
+            color: rgba(255,255,255,0.6);
+            margin-top: 50px;
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <div style="text-align: center;">
-        <!-- Live Views Count Yahan Dikhega -->
-        <div class="views-counter">📊 Total CV Views: <span id="viewCount">Connecting...</span></div>
+    <!-- Live Analytics Top section -->
+    <div class="analytics-bar">
+        <div class="counter-badge">
+            <i class="fa-solid fa-chart-line"></i> Total CV Views: <span id="viewCount">Connecting...</span>
+        </div>
     </div>
 
-    <div class="header">
-        <h1>📁 PRADEEP KUMAR</h1>
+    <!-- Main Header profile -->
+    <div class="profile-card">
+        <h1>PRADEEP KUMAR</h1>
         <p>Accountant | Compliance Expert | Legal Support</p>
-        <div class="badge">🟢 7+ Years Experience | Immediate Joining</div>
+        <span class="status-badge"><i class="fa-solid fa-circle-check"></i> 7+ Years Experience | Immediate Joining</span>
     </div>
 
-    <div class="stats">
-        <div class="stat-card"><div class="stat-number">7+</div><div>Years Experience</div></div>
-        <div class="stat-card"><div class="stat-number">500+</div><div>BRS/Month</div></div>
-        <div class="stat-card"><div class="stat-number">100%</div><div>Compliance</div></div>
-        <div class="stat-card"><div class="stat-number">LLB</div><div>Legal Expert</div></div>
-    </div>
-
-    <div class="grid">
-        <div class="card">
-            <h2>📞 CONTACT</h2>
-            <p>📱 8955152133 | 8502000060</p>
-            <p>✉️ pradeep.jat1996@gmail.com</p>
-            <p>📍 Sikar, Rajasthan</p>
-            <p>🎂 27 Feb 1996</p>
-            <button id="emailBtn">📧 Send Email</button>
+    <!-- Quick Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-item">
+            <i class="fa-solid fa-briefcase"></i>
+            <div class="stat-val">7+ Years</div>
+            <div class="stat-lbl">Experience</div>
         </div>
-
-        <div class="card">
-            <h2>💼 PROFESSIONAL LIFE</h2>
-            <p><strong>Matrix Education, Sikar</strong> (2021-2026)</p>
-            <ul style="margin-left: 20px; margin-top: 10px;">
-                <li>Tally Prime, GST, TDS, PF, ESIC</li>
-                <li>Bank Reconciliation & Cash Management</li>
-                <li>Legal Documentation & Notice Replies</li>
-                <li>MIS Reporting</li>
-            </ul>
+        <div class="stat-item">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div class="stat-val">LLB</div>
+            <div class="stat-lbl">Legal Expert</div>
         </div>
-
-        <div class="card">
-            <h2>⚙️ SKILLS</h2>
-            <span class="skill-tag">Tally Prime</span>
-            <span class="skill-tag">GST</span>
-            <span class="skill-tag">TDS</span>
-            <span class="skill-tag">PF/ESIC</span>
-            <span class="skill-tag">Legal Drafting</span>
-            <span class="skill-tag">MS Excel</span>
+        <div class="stat-item">
+            <i class="fa-solid fa-money-bill-transfer"></i>
+            <div class="stat-val">500+</div>
+            <div class="stat-lbl">BRS / Month</div>
+        </div>
+        <div class="stat-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div class="stat-val">100%</div>
+            <div class="stat-lbl">Compliance Rate</div>
         </div>
     </div>
 
-    <div class="grid" style="margin-top: 25px;">
-        <div class="card">
-            <h2>🎓 EDUCATION TIMELINE</h2>
-            <div class="timeline-item"><div class="year">2013-16</div><div>B.Com</div></div>
-            <div class="timeline-item"><div class="year">2017-20</div><div>LLB (54.5%)</div></div>
-            <div class="timeline-item"><div class="year">2021-23</div><div>M.Com (59.67%)</div></div>
+    <!-- Two Column Layout -->
+    <div class="main-layout">
+        <!-- Left Column -->
+        <div class="column">
+            <div class="card">
+                <h2><i class="fa-solid fa-address-book"></i> Contact Details</h2>
+                <ul class="contact-list">
+                    <li><i class="fa-solid fa-phone"></i> 8955152133 | 8502000060</li>
+                    <li><i class="fa-solid fa-envelope"></i> pradeep.jat1996@gmail.com</li>
+                    <li><i class="fa-solid fa-location-dot"></i> Sikar, Rajasthan</li>
+                    <li><i class="fa-solid fa-cake-candles"></i> 27 Feb 1996</li>
+                </ul>
+                <button class="btn" id="emailBtn"><i class="fa-solid fa-paper-plane"></i> Send Email</button>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-gears"></i> Core Skills</h2>
+                <div class="skills-container">
+                    <span class="skill-tag">Tally Prime</span>
+                    <span class="skill-tag">GST Filing</span>
+                    <span class="skill-tag">TDS Compliance</span>
+                    <span class="skill-tag">PF & ESIC</span>
+                    <span class="skill-tag">Legal Drafting</span>
+                    <span class="skill-tag">MS Excel (Advanced)</span>
+                    <span class="skill-tag">MIS Reporting</span>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
-            <h2>🏆 ACHIEVEMENTS</h2>
-            <ul style="margin-left: 20px;">
-                <li>Reduced GST errors by 30%</li>
-                <li>10+ Legal notice replies drafted</li>
-                <li>100% on-time compliance filing</li>
-            </ul>
-        </div>
+        <!-- Right Column -->
+        <div class="column">
+            <div class="card">
+                <h2><i class="fa-solid fa-building-columns"></i> Professional Life</h2>
+                <div style="margin-bottom: 15px;">
+                    <strong style="color: var(--secondary); font-size: 1.1rem;">Matrix Education, Sikar</strong>
+                    <span style="display:block; font-size: 0.85rem; color:#64748b; margin-bottom: 10px;">Senior Accountant & Legal Executive (2021 - 2026)</span>
+                </div>
+                <ul style="margin-left: 20px; color: #475569; line-height: 1.7;">
+                    <li>Managed end-to-end accounting operations using Tally Prime.</li>
+                    <li>Supervised high-volume Bank Reconciliations (500+ accounts monthly).</li>
+                    <li>Drafted professional replies to complex legal and statutory notices.</li>
+                    <li>Prepared weekly and monthly MIS reports for the management.</li>
+                </ul>
+            </div>
 
-        <div class="card">
-            <h2>📲 SHARE</h2>
-            <p>Link copy karo aur employer ko bhejo</p>
-            <button id="copyBtn">🔗 Copy Link</button>
+            <div class="card">
+                <h2><i class="fa-solid fa-graduation-cap"></i> Education Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-node">
+                        <div class="time-period">2021 - 2023</div>
+                        <div class="time-title">M.Com (59.67%)</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="time-period">2017 - 2020</div>
+                        <div class="time-title">LLB (54.5%)</div>
+                    </div>
+                    <div class="timeline-node">
+                        <div class="time-period">2013 - 2016</div>
+                        <div class="time-title">B.Com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fa-solid fa-trophy"></i> Key Achievements</h2>
+                <ul style="margin-left: 20px; color: #475569; line-height: 1.7;">
+                    <li>Successfully reduced overall GST reconciliation errors by 30%.</li>
+                    <li>Drafted and cleared 10+ crucial legal notice responses.</li>
+                    <li>Maintained a flawless 100% on-time corporate compliance record.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="text-align: center;">
+                <h2><i class="fa-solid fa-share-nodes"></i> Share Profile</h2>
+                <p style="color: #64748b; margin-bottom: 15px; font-size: 0.9rem;">Copy this link to quickly send to potential employers.</p>
+                <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> Copy Portfolio Link</button>
+            </div>
         </div>
     </div>
 
     <footer>
-        © 2026 Pradeep Kumar | Digital CV | Ready for On-Site Role
+        © 2026 Pradeep Kumar | Professional Digital CV | Powered by Firebase & Vercel
     </footer>
 </div>
 
-<!-- Firebase Core aur Database Libraries (CDN) -->
+<!-- Firebase Scripts (Compat Version for Vanilla HTML) -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.compat.js"></script>
 
 <script>
-    // Tumhare project details ke hisab se configured Firebase Config
+    // ⚠️ AUTOMATICALLY GENERATED CONFIG BASED ON YOUR ID ⚠️
     const firebaseConfig = {
         authDomain: "pradeep-cv-1299a.firebaseapp.com",
         databaseURL: "https://pradeep-cv-1299a-default-rtdb.asia-southeast1.firebasedatabase.app/",
@@ -256,41 +437,38 @@
         storageBucket: "pradeep-cv-1299a.appspot.com"
     };
 
-    // Firebase ko initialize kiya
+    // Firebase Initialization
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    // 1. LIVE VIEWS COUNTER
+    // 1. Live Views Counter
     const viewsRef = database.ref('cv_views');
     
-    // Database se data screen par dikhane ke liye
     viewsRef.on('value', (snapshot) => {
         const currentViews = snapshot.val() || 0;
         document.getElementById('viewCount').innerText = currentViews;
     });
 
-    // Har naye user ke aane par count +1 karne ke liye
     viewsRef.transaction((currentValue) => {
         return (currentValue || 0) + 1;
     });
 
-    // 2. ACTIVITY LOGS FUNCTION
+    // 2. Activity Logs Tracker
     function logActivity(actionName) {
-        const logsRef = database.ref('clicks_and_shares').push();
+        const logsRef = database.ref('activity_logs').push();
         logsRef.set({
             action: actionName,
             time: new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
         });
     }
 
-    // Copy Link functionality + Firebase tracker
+    // Buttons Functionalities
     document.getElementById('copyBtn').addEventListener('click', function() {
         navigator.clipboard.writeText(window.location.href);
-        alert('✅ Link copied! ' + window.location.href);
+        alert('✅ Portfolio Link copied successfully!');
         logActivity('Link Copied');
     });
 
-    // Email functionality + Firebase tracker
     document.getElementById('emailBtn').addEventListener('click', function() {
         window.location.href = 'mailto:pradeep.jat1996@gmail.com';
         logActivity('Clicked Email Button');
