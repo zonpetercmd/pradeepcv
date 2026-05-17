@@ -76,9 +76,47 @@
     </div>
     
     <div class="card">
-        <h2>Chat Messages <i class="fas fa-comments"></i> & User Replies</h2>
-        <div id="chatMessages" style="max-height:400px; overflow-y:auto;"></div>
-    </div>
+// Admin panel mein chat messages dikhane ke liye
+database.ref('chats').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
+    const messages = [];
+    snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
+    messages.reverse();
+    
+    const container = document.getElementById('chatMessagesList');
+    if(container) {
+        container.innerHTML = messages.map(m => `
+            <div style="background: #2a2a2a; padding: 12px; margin-bottom: 10px; border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <strong style="color: #D4AF37;">${escapeHtml(m.userName)}</strong>
+                    <small>${new Date(m.timestamp).toLocaleString()}</small>
+                </div>
+                <div style="margin: 8px 0;">${escapeHtml(m.message)}</div>
+                <button onclick="replyToChat('${m.userId}', '${escapeHtml(m.userName)}')" style="background: #D4AF37; padding: 5px 12px; border: none; border-radius: 20px; cursor: pointer;">Reply</button>
+            </div>
+        `).join('');
+    }
+});
+
+window.replyToChat = function(userId, userName) {
+    const reply = prompt(`Reply to ${userName}:`);
+    if(reply && reply.trim()) {
+        database.ref('chats').push({
+            userId: userId,
+            userName: "Pradeep Kumar (Admin)",
+            message: reply,
+            timestamp: Date.now(),
+            read: false,
+            isAdmin: true
+        });
+        alert('✅ Reply sent!');
+    }
+};
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
     
     <div class="card">
         <h2>CV Requests</h2>
