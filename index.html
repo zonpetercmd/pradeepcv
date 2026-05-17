@@ -1,677 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Pradeep Kumar | Accountant & Legal Expert</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <style>
-        :root {
-            --primary: #0a0a0a;
-            --secondary: #1a1a1a;
-            --gold: #D4AF37;
-            --gold-light: #F5E6A3;
-            --white: #ffffff;
-            --gray: #f5f5f5;
-            --dark-gray: #333333;
-            --transition: all 0.3s ease;
-        }
-
-        [data-theme="dark"] {
-            --primary: #ffffff;
-            --secondary: #f0f0f0;
-            --white: #1a1a1a;
-            --gray: #2a2a2a;
-            --dark-gray: #e0e0e0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--white);
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        /* Theme Toggle - Fixed Position */
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: var(--transition);
-            border: none;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        /* Navigation */
-        .navbar {
-            background: var(--white);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 999;
-            padding: 15px 5%;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
-        .logo h2 {
-            color: var(--gold);
-            font-size: 1.5rem;
-        }
-
-        .logo p {
-            font-size: 0.7rem;
-            color: var(--dark-gray);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 500;
-            transition: var(--transition);
-        }
-
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
-            padding: 60px 5%;
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .hero-content p {
-            font-size: 1rem;
-            color: var(--secondary);
-            margin-bottom: 25px;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--gold);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-primary:hover {
-            background: transparent;
-            color: var(--primary);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--primary);
-            color: var(--gold);
-        }
-
-        /* Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 50px 5%;
-        }
-
-        /* Section Title */
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 40px;
-            color: var(--primary);
-        }
-
-        .section-title span {
-            color: var(--gold);
-        }
-
-        /* About Section */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-
-        .about-img {
-            width: 100%;
-            max-width: 350px;
-            height: 350px;
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 0 auto;
-            background: var(--gray);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 3px solid var(--gold);
-        }
-
-        .about-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .about-img i {
-            font-size: 80px;
-            color: var(--gold);
-        }
-
-        .about-text h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .about-text p {
-            line-height: 1.6;
-            margin-bottom: 20px;
-            color: var(--dark-gray);
-        }
-
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat h4 {
-            font-size: 1.5rem;
-            color: var(--gold);
-        }
-
-        /* Services Section */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-        }
-
-        .service-card {
-            background: var(--gray);
-            padding: 25px;
-            border-radius: 15px;
-            text-align: center;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .service-card i {
-            font-size: 40px;
-            color: var(--gold);
-            margin-bottom: 15px;
-        }
-
-        .service-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        /* Skills */
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .skill-tag {
-            background: var(--gold);
-            color: var(--primary);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        /* Experience Timeline */
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            padding: 20px;
-            background: var(--gray);
-            border-radius: 15px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--gold);
-        }
-
-        .timeline-year {
-            color: var(--gold);
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-
-        /* Reviews */
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
-        .review-card {
-            background: var(--gray);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .review-card i {
-            color: var(--gold);
-            font-size: 25px;
-            margin-bottom: 12px;
-        }
-
-        .review-card p {
-            font-style: italic;
-            margin-bottom: 12px;
-        }
-
-        .reviewer {
-            font-weight: 700;
-            color: var(--gold);
-        }
-
-        /* Contact & Chat */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-        }
-
-        .contact-info {
-            background: var(--gray);
-            padding: 25px;
-            border-radius: 15px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-
-        .contact-item i {
-            width: 35px;
-            height: 35px;
-            background: var(--gold);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-        }
-
-        .chat-box {
-            background: var(--gray);
-            padding: 25px;
-            border-radius: 15px;
-        }
-
-        .messages {
-            height: 250px;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding: 10px;
-            background: var(--white);
-            border-radius: 10px;
-        }
-
-        .message {
-            margin-bottom: 12px;
-            padding: 8px 12px;
-            border-radius: 10px;
-        }
-
-        .message.user {
-            background: var(--gold);
-            color: var(--primary);
-            text-align: right;
-        }
-
-        .message.admin {
-            background: var(--primary);
-            color: var(--gold);
-        }
-
-        .chat-input {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input input {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 25px;
-            background: var(--white);
-            color: var(--primary);
-        }
-
-        .chat-input button {
-            padding: 10px 18px;
-            background: var(--gold);
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Login for Chat */
-        .login-area {
-            text-align: center;
-            padding: 15px;
-        }
-
-        .login-area input {
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid var(--gold);
-            border-radius: 25px;
-            width: calc(100% - 20px);
-        }
-
-        .login-area button {
-            margin-top: 10px;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: var(--white);
-            padding: 25px;
-            border-radius: 20px;
-            max-width: 450px;
-            width: 90%;
-        }
-
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid var(--gold);
-            border-radius: 10px;
-        }
-
-        footer {
-            background: var(--primary);
-            color: var(--gold);
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .about-grid, .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            .nav-links {
-                margin-top: 12px;
-                justify-content: center;
-            }
-            .hero-content h1 {
-                font-size: 1.8rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
-            .theme-toggle {
-                bottom: 15px;
-                right: 15px;
-                width: 45px;
-                height: 45px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<!-- Theme Toggle -->
-<button class="theme-toggle" id="themeToggle">
-    <i class="fas fa-sun"></i>
-</button>
-
-<!-- Navigation -->
-<nav class="navbar">
-    <div class="nav-container">
-        <div class="logo">
-            <h2>PRADEEP <span style="color:var(--gold);">KUMAR</span></h2>
-            <p>Accountant & Legal Expert</p>
-        </div>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#contact">Contact</a>
-        </div>
-    </div>
-</nav>
-
-<!-- Hero Section -->
-<section class="hero" id="home">
-    <div class="hero-content">
-        <h1>Pradeep Kumar</h1>
-        <p>Accountant | Compliance Expert | Legal Support | 7+ Years Experience</p>
-        <div class="btn-group">
-            <a href="#contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Hire Me</a>
-            <button class="btn btn-secondary" id="downloadCvBtn"><i class="fas fa-download"></i> Download CV</button>
-            <a href="#" id="linkedinBtn" target="_blank" class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        </div>
-    </div>
-</section>
-
-<!-- About Section -->
-<section class="container" id="about">
-    <h2 class="section-title">About <span>Me</span></h2>
-    <div class="about-grid">
-        <div class="about-img" id="aboutImg">
-            <i class="fas fa-user-circle"></i>
-        </div>
-        <div class="about-text">
-            <h3 id="aboutName">Pradeep Kumar</h3>
-            <p id="aboutDesc">Experienced Accountant and Legal Expert with 7+ years of expertise in financial management, GST compliance, TDS filing, and legal documentation. Dedicated to providing 100% accurate and timely services to clients.</p>
-            <div class="stats">
-                <div class="stat"><h4 id="stat1">7+</h4><p>Years Exp</p></div>
-                <div class="stat"><h4 id="stat2">500+</h4><p>Clients</p></div>
-                <div class="stat"><h4 id="stat3">100%</h4><p>Success</p></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section class="container" id="services">
-    <h2 class="section-title">My <span>Services</span></h2>
-    <div class="services-grid" id="servicesGrid"></div>
-</section>
-
-<!-- Experience Section -->
-<section class="container" id="experience">
-    <h2 class="section-title">Work <span>Experience</span></h2>
-    <div class="timeline" id="timeline"></div>
-</section>
-
-<!-- Skills Section -->
-<section class="container" id="skills">
-    <h2 class="section-title">My <span>Skills</span></h2>
-    <div class="skills-container" id="skillsContainer"></div>
-</section>
-
-<!-- Reviews Section -->
-<section class="container" id="reviews">
-    <h2 class="section-title">Client <span>Reviews</span></h2>
-    <div class="reviews-grid" id="reviewsGrid"></div>
-</section>
-
-<!-- Contact & Chat Section - FULLY WORKING CHAT -->
-<section class="container" id="contact">
-    <h2 class="section-title">Contact <span>Me</span></h2>
-    <div class="contact-grid">
-        <div class="contact-info">
-            <h3>Get In Touch</h3>
-            <div class="contact-item"><i class="fas fa-phone"></i> <span id="contactPhone">8955152133 | 8502000060</span></div>
-            <div class="contact-item"><i class="fas fa-envelope"></i> <span id="contactEmail">pradeep.jat1996@gmail.com</span></div>
-            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="contactLocation">Sikar, Rajasthan</span></div>
-            <div class="contact-item"><i class="fab fa-linkedin"></i> <a href="#" id="linkedinContactLink" target="_blank">Connect on LinkedIn</a></div>
-        </div>
-        
-        <!-- CHAT BOX -->
-        <div class="chat-box">
-            <h3>💬 Live Chat with Pradeep</h3>
-            
-            <div id="chatLogin" class="login-area">
-                <p style="margin-bottom: 15px; font-size: 14px;">Create an account to start chatting</p>
-                <input type="text" id="chatFullName" placeholder="Your Full Name" style="width:100%; padding:12px; margin-bottom:10px; border-radius:25px; border:1px solid var(--gold);">
-                <input type="email" id="chatEmailId" placeholder="Your Email" style="width:100%; padding:12px; margin-bottom:10px; border-radius:25px; border:1px solid var(--gold);">
-                <button onclick="registerChatUser()" style="background: var(--gold); color: #0a0a0a; border: none; padding: 12px 25px; border-radius: 30px; cursor: pointer; font-weight: 600; width: 100%;">
-                    <i class="fas fa-user-plus"></i> Create Account & Join Chat
-                </button>
-            </div>
-            
-            <div id="chatArea" style="display:none;">
-                <div id="chatUserInfo" style="background: var(--gold); padding: 8px 15px; border-radius: 20px; margin-bottom: 15px; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
-                    <span><i class="fas fa-user-circle"></i> Logged in as: <strong id="loggedUserName"></strong></span>
-                    <button onclick="logoutChatUser()" style="background: #dc2626; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 11px;">Logout</button>
-                </div>
-                
-                <div class="messages" id="messagesDiv" style="height: 300px; overflow-y: auto; background: var(--white); border-radius: 15px; padding: 15px; margin-bottom: 15px;">
-                    <div style="text-align: center; color: #999; padding: 20px;">Loading messages...</div>
-                </div>
-                
-                <div id="typingIndicator" style="font-size: 11px; color: var(--gold); margin-bottom: 8px; display: none;">
-                    <i class="fas fa-ellipsis-h"></i> Someone is typing...
-                </div>
-                
-                <div class="chat-input" style="display: flex; gap: 10px;">
-                    <input type="text" id="messageInput" placeholder="Type your message..." style="flex: 1; padding: 12px; border: 2px solid var(--gold); border-radius: 25px; background: var(--white); color: var(--primary);">
-                    <button onclick="sendChatMessage()" style="background: var(--gold); color: #0a0a0a; border: none; padding: 12px 20px; border-radius: 25px; cursor: pointer; font-weight: 600;">
-                        <i class="fas fa-paper-plane"></i> Send
-                    </button>
-                </div>
-                
-                <p style="font-size: 11px; margin-top: 10px; text-align: center; color: #888;">
-                    <i class="fas fa-lock"></i> End-to-end encrypted | Admin will reply within 24 hours
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Create CV Modal -->
-<div class="modal" id="createCvModal">
-    <div class="modal-content">
-        <h2>Create Your Professional CV</h2>
-        <p>Fill details below to get a professional CV template!</p>
-        <input type="text" id="cvName" placeholder="Full Name">
-        <input type="email" id="cvEmail" placeholder="Email">
-        <input type="text" id="cvPhone" placeholder="Phone">
-        <textarea id="cvSkills" placeholder="Your Skills (comma separated)"></textarea>
-        <button onclick="submitCvRequest()" style="background:var(--gold); padding:10px; border:none; border-radius:25px; cursor:pointer;">Submit Request</button>
-        <button onclick="closeModal()" style="margin-top:10px; padding:8px; border:none; border-radius:25px; cursor:pointer;">Close</button>
-    </div>
-</div>
-
-<footer>
-    <p>© 2026 Pradeep Kumar | Professional Accountant & Legal Expert | All Rights Reserved</p>
-</footer>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
     // Firebase Config
@@ -685,7 +14,7 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    let currentChatUser = null;
+    let currentUser = null;
     let typingTimeout = null;
     
     // Theme Toggle
@@ -704,25 +33,30 @@
         });
     }
     
-    // Load Public Data
+    // ========== LOAD PUBLIC DATA ==========
     function loadPublicData() {
         database.ref('public_data').on('value', (snapshot) => {
             const data = snapshot.val() || {};
             
-            document.getElementById('aboutName').innerText = data.fullName || 'Pradeep Kumar';
-            document.getElementById('aboutDesc').innerText = data.about || 'Experienced Accountant and Legal Expert...';
-            document.getElementById('contactPhone').innerText = data.phone || '8955152133 | 8502000060';
-            document.getElementById('contactEmail').innerText = data.email || 'pradeep.jat1996@gmail.com';
-            document.getElementById('contactLocation').innerText = data.location || 'Sikar, Rajasthan';
+            const nameEl = document.getElementById('aboutName');
+            const descEl = document.getElementById('aboutDesc');
+            const phoneEl = document.getElementById('contactPhone');
+            const emailEl = document.getElementById('contactEmail');
+            const locationEl = document.getElementById('contactLocation');
+            
+            if(nameEl) nameEl.innerText = data.fullName || 'Pradeep Kumar';
+            if(descEl) descEl.innerText = data.about || 'Experienced Accountant and Legal Expert with 7+ years of expertise...';
+            if(phoneEl) phoneEl.innerText = data.phone || '8955152133 | 8502000060';
+            if(emailEl) emailEl.innerText = data.email || 'pradeep.jat1996@gmail.com';
+            if(locationEl) locationEl.innerText = data.location || 'Sikar, Rajasthan';
             
             if(data.linkedin) {
                 const linkedinBtns = document.querySelectorAll('#linkedinBtn, #linkedinContactLink');
                 linkedinBtns.forEach(btn => { if(btn) btn.href = data.linkedin; });
             }
             
-            if(data.photoUrl) {
-                const aboutImg = document.getElementById('aboutImg');
-                if(aboutImg) aboutImg.innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
+            if(data.photoUrl && document.getElementById('aboutImg')) {
+                document.getElementById('aboutImg').innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
             }
             
             if(data.stats) {
@@ -736,98 +70,103 @@
             
             // Services
             const services = data.services || [
-                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions" },
-                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting" },
-                { icon: "fa-file-invoice", title: "Taxation", desc: "GST filing, TDS returns" }
+                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions including Tally, GST, TDS" },
+                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting, compliance, documentation" },
+                { icon: "fa-file-invoice", title: "Taxation", desc: "GST filing, Income Tax, TDS returns" },
+                { icon: "fa-briefcase", title: "Business Consulting", desc: "Financial planning and business advisory" }
             ];
             const servicesGrid = document.getElementById('servicesGrid');
             if(servicesGrid) {
                 servicesGrid.innerHTML = services.map(s => `
                     <div class="service-card">
                         <i class="fas ${s.icon}"></i>
-                        <h3>${s.title}</h3>
-                        <p>${s.desc}</p>
+                        <h3>${escapeHtml(s.title)}</h3>
+                        <p>${escapeHtml(s.desc)}</p>
                     </div>
                 `).join('');
             }
             
             // Experience
             const experiences = data.experiences || [
-                { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS" }
+                { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS, and legal notice drafting." }
             ];
             const timeline = document.getElementById('timeline');
             if(timeline) {
                 timeline.innerHTML = experiences.map(exp => `
                     <div class="timeline-item">
-                        <div class="timeline-year">${exp.year}</div>
-                        <h3>${exp.title}</h3>
-                        <p><strong>${exp.company}</strong></p>
-                        <p>${exp.desc}</p>
+                        <div class="timeline-year">${escapeHtml(exp.year)}</div>
+                        <h3>${escapeHtml(exp.title)}</h3>
+                        <p><strong>${escapeHtml(exp.company)}</strong></p>
+                        <p>${escapeHtml(exp.desc)}</p>
                     </div>
                 `).join('');
             }
             
             // Skills
-            const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel'];
+            const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel', 'Income Tax', 'Company Law', 'Bank Reconciliation'];
             const skillsContainer = document.getElementById('skillsContainer');
             if(skillsContainer) {
-                skillsContainer.innerHTML = skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+                skillsContainer.innerHTML = skills.map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
             }
             
             // Reviews
             const reviews = data.reviews || [
-                { name: "Radheshyam Saini", text: "Very nice behavior and complete accounting solution" }
+                { name: "Radheshyam Saini", text: "Very nice behavior and complete accounting solution" },
+                { name: "Neha Gupta", text: "Excellent GST filing service. Highly professional!" }
             ];
             const reviewsGrid = document.getElementById('reviewsGrid');
             if(reviewsGrid) {
                 reviewsGrid.innerHTML = reviews.map(r => `
                     <div class="review-card">
                         <i class="fas fa-quote-left"></i>
-                        <p>${r.text}</p>
-                        <p class="reviewer">- ${r.name}</p>
+                        <p>${escapeHtml(r.text)}</p>
+                        <p class="reviewer">- ${escapeHtml(r.name)}</p>
                     </div>
                 `).join('');
             }
         });
     }
     
-    // ========== CHAT SYSTEM FUNCTIONS ==========
+    // ========== CHAT SYSTEM - USER SIDE ==========
     
-    function checkExistingChatUser() {
-        const savedUser = localStorage.getItem('chat_user_data');
+    // Check if user already logged in
+    function checkExistingUser() {
+        const savedUser = localStorage.getItem('chat_user');
         if(savedUser) {
             try {
-                currentChatUser = JSON.parse(savedUser);
-                database.ref('chat_users/' + currentChatUser.id).once('value', (snapshot) => {
+                currentUser = JSON.parse(savedUser);
+                // Verify user exists in Firebase
+                database.ref('chat_users/' + currentUser.id).once('value', (snapshot) => {
                     if(snapshot.exists()) {
-                        showChatArea();
-                        loadChatMessages();
-                        setupTypingListener();
+                        showChatInterface();
+                        loadUserMessages();
+                        setupTyping();
                     } else {
-                        localStorage.removeItem('chat_user_data');
-                        currentChatUser = null;
+                        localStorage.removeItem('chat_user');
+                        currentUser = null;
                     }
                 });
             } catch(e) {
-                localStorage.removeItem('chat_user_data');
+                localStorage.removeItem('chat_user');
             }
         }
     }
     
-    window.registerChatUser = function() {
-        const name = document.getElementById('chatFullName').value.trim();
-        const email = document.getElementById('chatEmailId').value.trim();
+    // Register new user
+    window.registerUser = function() {
+        const name = document.getElementById('chatName').value.trim();
+        const email = document.getElementById('chatEmail').value.trim();
         
         if(!name) {
             alert('❌ Please enter your name');
             return;
         }
         if(!email || !email.includes('@')) {
-            alert('❌ Please enter a valid email');
+            alert('❌ Please enter valid email');
             return;
         }
         
-        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         const userData = {
             id: userId,
             name: name,
@@ -837,206 +176,260 @@
         };
         
         database.ref('chat_users/' + userId).set(userData).then(() => {
-            currentChatUser = userData;
-            localStorage.setItem('chat_user_data', JSON.stringify(userData));
+            currentUser = userData;
+            localStorage.setItem('chat_user', JSON.stringify(userData));
             
+            // Send welcome message
             database.ref('chats').push({
                 userId: userId,
-                userName: "Pradeep Kumar (Admin)",
-                message: `👋 Welcome ${name}! Thanks for connecting. How can I help you today?`,
+                userName: name,
+                userEmail: email,
+                message: `👋 Hello! I'm ${name}. I need your professional services.`,
                 timestamp: Date.now(),
                 read: false,
-                isAdmin: true
+                isAdmin: false,
+                conversationId: userId
             });
             
-            showChatArea();
-            loadChatMessages();
-            setupTypingListener();
+            showChatInterface();
+            loadUserMessages();
+            setupTyping();
             
-            document.getElementById('chatFullName').value = '';
-            document.getElementById('chatEmailId').value = '';
+            document.getElementById('chatName').value = '';
+            document.getElementById('chatEmail').value = '';
         }).catch(err => {
             console.error(err);
-            alert('❌ Registration failed. Please try again.');
+            alert('Registration failed. Please try again.');
         });
     };
     
-    function showChatArea() {
-        const chatLogin = document.getElementById('chatLogin');
-        const chatArea = document.getElementById('chatArea');
-        const loggedUserName = document.getElementById('loggedUserName');
-        if(chatLogin) chatLogin.style.display = 'none';
-        if(chatArea) chatArea.style.display = 'block';
-        if(loggedUserName && currentChatUser) loggedUserName.innerText = currentChatUser.name;
+    // Show chat interface after login
+    function showChatInterface() {
+        const loginDiv = document.getElementById('chatLogin');
+        const chatDiv = document.getElementById('chatArea');
+        const userNameSpan = document.getElementById('chatUserName');
+        
+        if(loginDiv) loginDiv.style.display = 'none';
+        if(chatDiv) chatDiv.style.display = 'block';
+        if(userNameSpan && currentUser) userNameSpan.innerText = currentUser.name;
     }
     
-    function loadChatMessages() {
-        if(!currentChatUser) return;
+    // Load only CURRENT USER's messages (not others)
+    function loadUserMessages() {
+        if(!currentUser) return;
         
-        const userId = currentChatUser.id;
         const messagesRef = database.ref('chats').orderByChild('timestamp').limitToLast(100);
         
         messagesRef.on('value', (snapshot) => {
-            const messages = [];
+            const allMessages = [];
             snapshot.forEach(child => {
-                messages.push({ id: child.key, ...child.val() });
+                const msg = child.val();
+                allMessages.push({ id: child.key, ...msg });
             });
-            messages.sort((a, b) => a.timestamp - b.timestamp);
             
-            const messagesDiv = document.getElementById('messagesDiv');
+            // FILTER: Sirf current user ke messages dikhao
+            const userMessages = allMessages.filter(msg => 
+                msg.userId === currentUser.id || 
+                (msg.userId === 'admin' && msg.conversationId === currentUser.id)
+            );
+            
+            // Also include messages where conversationId matches
+            const relevantMessages = allMessages.filter(msg => 
+                msg.userId === currentUser.id || 
+                msg.conversationId === currentUser.id ||
+                (msg.userId === 'admin' && msg.userEmail === currentUser.email)
+            );
+            
+            const finalMessages = [...new Map([...userMessages, ...relevantMessages].map(m => [m.id, m])).values()];
+            finalMessages.sort((a, b) => a.timestamp - b.timestamp);
+            
+            const messagesDiv = document.getElementById('messagesList');
             if(!messagesDiv) return;
             
-            if(messages.length === 0) {
-                messagesDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No messages yet. Start the conversation!</div>';
+            if(finalMessages.length === 0) {
+                messagesDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 30px;">✨ Start a conversation! Send a message below.</div>';
                 return;
             }
             
-            messagesDiv.innerHTML = messages.map(m => {
-                const isUser = m.userId === userId;
+            messagesDiv.innerHTML = finalMessages.map(msg => {
+                const isUser = msg.userId === currentUser.id;
                 return `
-                    <div class="message ${isUser ? 'user' : 'admin'}" style="margin-bottom: 15px; ${isUser ? 'text-align: right;' : 'text-align: left;'}">
-                        <div style="display: inline-block; max-width: 85%; ${isUser ? 'background: var(--gold);' : 'background: var(--primary);'} padding: 10px 15px; border-radius: 15px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
-                            <div style="font-size: 11px; opacity: 0.7; margin-bottom: 4px;">${m.userName}</div>
-                            <div style="word-wrap: break-word;">${escapeHtml(m.message)}</div>
-                            <div style="font-size: 9px; opacity: 0.5; margin-top: 5px;">${new Date(m.timestamp).toLocaleString()}</div>
+                    <div class="chat-message ${isUser ? 'user-msg' : 'admin-msg'}" style="margin-bottom: 15px; display: flex; justify-content: ${isUser ? 'flex-end' : 'flex-start'};">
+                        <div style="max-width: 80%; ${isUser ? 'background: #D4AF37; color: #0a0a0a;' : 'background: #1a1a1a; color: #D4AF37;'} padding: 12px 16px; border-radius: 18px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
+                            <div style="font-size: 11px; opacity: 0.7; margin-bottom: 4px;">
+                                ${isUser ? 'You' : 'Pradeep Kumar (Admin)'}
+                            </div>
+                            <div style="word-wrap: break-word; white-space: pre-wrap;">${formatMessage(msg.message)}</div>
+                            <div style="font-size: 9px; opacity: 0.5; margin-top: 5px;">
+                                ${new Date(msg.timestamp).toLocaleString()}
+                                ${msg.read ? ' ✓✓' : ' ✓'}
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
             
+            // Scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Mark messages as read
+            finalMessages.forEach(msg => {
+                if(msg.userId !== currentUser.id && !msg.read) {
+                    database.ref('chats/' + msg.id).update({ read: true, readAt: Date.now() });
+                }
+            });
         });
     }
     
-    function setupTypingListener() {
-        if(!currentChatUser) return;
+    // Format message (support emoji and line breaks)
+    function formatMessage(text) {
+        if(!text) return '';
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/__(.*?)__/g, '<em>$1</em>');
+    }
+    
+    // Setup typing indicator
+    function setupTyping() {
+        if(!currentUser) return;
         
-        database.ref('typing_status/admin').on('value', (snapshot) => {
+        const typingRef = database.ref('typing_status/' + currentUser.id);
+        const adminTypingRef = database.ref('typing_status/admin_' + currentUser.id);
+        
+        adminTypingRef.on('value', (snapshot) => {
             const isTyping = snapshot.val();
-            const indicator = document.getElementById('typingIndicator');
+            const indicator = document.getElementById('adminTyping');
             if(indicator) {
                 if(isTyping) {
                     indicator.style.display = 'block';
-                    indicator.innerHTML = '<i class="fas fa-ellipsis-h"></i> Admin is typing...';
                 } else {
                     indicator.style.display = 'none';
                 }
             }
         });
         
-        const messageInput = document.getElementById('messageInput');
-        if(messageInput) {
-            messageInput.addEventListener('input', () => {
-                database.ref('typing_status/' + currentChatUser.id).set(true);
+        const input = document.getElementById('chatMessageInput');
+        if(input) {
+            input.addEventListener('input', () => {
+                typingRef.set(true);
                 if(typingTimeout) clearTimeout(typingTimeout);
                 typingTimeout = setTimeout(() => {
-                    database.ref('typing_status/' + currentChatUser.id).set(false);
+                    typingRef.set(false);
                 }, 1000);
             });
         }
     }
     
-    window.sendChatMessage = function() {
-        if(!currentChatUser) {
+    // Send message
+    window.sendUserMessage = function() {
+        if(!currentUser) {
             alert('Please login first');
             return;
         }
         
-        const input = document.getElementById('messageInput');
+        const input = document.getElementById('chatMessageInput');
         const message = input.value.trim();
         
         if(!message) {
-            alert('Please enter a message');
+            alert('Please type a message');
             return;
         }
         
-        const sendBtn = document.querySelector('#messageInput + button');
+        const sendBtn = document.getElementById('sendMsgBtn');
         if(sendBtn) sendBtn.disabled = true;
         
         database.ref('chats').push({
-            userId: currentChatUser.id,
-            userName: currentChatUser.name,
+            userId: currentUser.id,
+            userName: currentUser.name,
+            userEmail: currentUser.email,
             message: message,
             timestamp: Date.now(),
             read: false,
-            isAdmin: false
+            isAdmin: false,
+            conversationId: currentUser.id
         }).then(() => {
             input.value = '';
-            database.ref('typing_status/' + currentChatUser.id).set(false);
+            database.ref('typing_status/' + currentUser.id).set(false);
         }).catch(err => {
             console.error(err);
-            alert('❌ Failed to send message');
+            alert('Failed to send message');
         }).finally(() => {
             if(sendBtn) sendBtn.disabled = false;
         });
     };
     
-    window.logoutChatUser = function() {
-        if(currentChatUser) {
-            database.ref('typing_status/' + currentChatUser.id).set(false);
+    // Logout
+    window.logoutUser = function() {
+        if(currentUser) {
+            database.ref('typing_status/' + currentUser.id).set(false);
         }
-        currentChatUser = null;
-        localStorage.removeItem('chat_user_data');
+        currentUser = null;
+        localStorage.removeItem('chat_user');
         
         database.ref('chats').off();
         database.ref('typing_status').off();
         
-        const chatLogin = document.getElementById('chatLogin');
-        const chatArea = document.getElementById('chatArea');
-        if(chatLogin) chatLogin.style.display = 'block';
-        if(chatArea) chatArea.style.display = 'none';
+        const loginDiv = document.getElementById('chatLogin');
+        const chatDiv = document.getElementById('chatArea');
         
-        const nameInput = document.getElementById('chatFullName');
-        const emailInput = document.getElementById('chatEmailId');
-        if(nameInput) nameInput.value = '';
-        if(emailInput) emailInput.value = '';
+        if(loginDiv) loginDiv.style.display = 'block';
+        if(chatDiv) chatDiv.style.display = 'none';
     };
-    
-    function escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
     
     // PDF Download
     const downloadBtn = document.getElementById('downloadCvBtn');
     if(downloadBtn) {
         downloadBtn.addEventListener('click', () => {
-            const name = document.getElementById('aboutName').innerText;
-            const about = document.getElementById('aboutDesc').innerText;
-            const skills = document.getElementById('skillsContainer').innerHTML;
-            const experience = document.getElementById('timeline').innerHTML;
-            const phone = document.getElementById('contactPhone').innerText;
-            const email = document.getElementById('contactEmail').innerText;
+            const name = document.getElementById('aboutName')?.innerText || 'Pradeep Kumar';
+            const about = document.getElementById('aboutDesc')?.innerText || '';
+            const skills = document.getElementById('skillsContainer')?.innerHTML || '';
+            const experience = document.getElementById('timeline')?.innerHTML || '';
+            const phone = document.getElementById('contactPhone')?.innerText || '';
+            const email = document.getElementById('contactEmail')?.innerText || '';
             
             const element = document.createElement('div');
             element.style.padding = '40px';
             element.style.fontFamily = 'Inter, sans-serif';
+            element.style.maxWidth = '800px';
+            element.style.margin = '0 auto';
             element.innerHTML = `
                 <div style="text-align:center; border-bottom:2px solid #D4AF37; padding-bottom:20px;">
-                    <h1>${name}</h1>
+                    <h1>${escapeHtml(name)}</h1>
                     <p style="color:#D4AF37;">Accountant & Legal Expert</p>
                 </div>
-                <div style="margin:20px 0;"><h3>Professional Summary</h3><p>${about}</p></div>
+                <div style="margin:20px 0;"><h3>Professional Summary</h3><p>${escapeHtml(about)}</p></div>
                 <div style="margin:20px 0;"><h3>Skills</h3><div>${skills}</div></div>
                 <div style="margin:20px 0;"><h3>Experience</h3>${experience}</div>
-                <div><h3>Contact</h3><p>${phone}</p><p>${email}</p></div>
+                <div><h3>Contact</h3><p>${escapeHtml(phone)}</p><p>${escapeHtml(email)}</p></div>
             `;
-            html2pdf().set({ margin: 0.5, filename: `${name}_CV.pdf`, jsPDF: { format: 'a4' } }).from(element).save();
+            html2pdf().set({ margin: 0.5, filename: `${name.replace(/\s/g, '_')}_CV.pdf`, jsPDF: { format: 'a4' } }).from(element).save();
         });
     }
     
     // Modal functions
     window.submitCvRequest = function() {
-        const data = {
-            name: document.getElementById('cvName')?.value,
-            email: document.getElementById('cvEmail')?.value,
-            phone: document.getElementById('cvPhone')?.value,
-            skills: document.getElementById('cvSkills')?.value,
+        const name = document.getElementById('cvName')?.value;
+        const email = document.getElementById('cvEmail')?.value;
+        const phone = document.getElementById('cvPhone')?.value;
+        const skills = document.getElementById('cvSkills')?.value;
+        
+        if(!name || !email) {
+            alert('Please fill name and email');
+            return;
+        }
+        
+        database.ref('cv_requests').push({
+            name: name,
+            email: email,
+            phone: phone || '',
+            skills: skills || '',
             timestamp: Date.now()
-        };
-        database.ref('cv_requests').push(data);
-        alert('✅ CV request submitted!');
+        });
+        alert('✅ CV request submitted! We will email you the template within 24 hours.');
         closeModal();
     };
     
@@ -1059,9 +452,27 @@
         });
     }
     
+    // Enter key to send
+    document.addEventListener('keypress', function(e) {
+        if(e.key === 'Enter' && document.getElementById('chatMessageInput') === document.activeElement) {
+            sendUserMessage();
+        }
+    });
+    
+    // Escape HTML helper
+    function escapeHtml(text) {
+        if(!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
     // Initialize
     loadPublicData();
-    checkExistingChatUser();
+    checkExistingUser();
     setTimeout(initTabs, 500);
     
     // Views counter
@@ -1071,6 +482,9 @@
         if(viewSpan) viewSpan.innerText = snapshot.val() || 0;
     });
     viewsRef.transaction(v => (v || 0) + 1);
+    
+    // Make functions global
+    window.registerUser = registerUser;
+    window.sendUserMessage = sendUserMessage;
+    window.logoutUser = logoutUser;
 </script>
-</body>
-</html>
