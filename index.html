@@ -685,275 +685,392 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    let currentUser = null;
+    let currentChatUser = null;
+    let typingTimeout = null;
     
     // Theme Toggle
     let darkMode = false;
-    document.getElementById('themeToggle').addEventListener('click', () => {
-        darkMode = !darkMode;
-        if(darkMode) {
-            document.body.setAttribute('data-theme', 'dark');
-            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
-        } else {
-            document.body.removeAttribute('data-theme');
-            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
-        }
-    });
+    const themeToggle = document.getElementById('themeToggle');
+    if(themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            darkMode = !darkMode;
+            if(darkMode) {
+                document.body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.body.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+    }
     
-    // Load Public Data (Real-time)
+    // Load Public Data
     function loadPublicData() {
         database.ref('public_data').on('value', (snapshot) => {
             const data = snapshot.val() || {};
             
             document.getElementById('aboutName').innerText = data.fullName || 'Pradeep Kumar';
-            document.getElementById('aboutDesc').innerText = data.about || 'Experienced Accountant and Legal Expert with 7+ years of expertise...';
-            
+            document.getElementById('aboutDesc').innerText = data.about || 'Experienced Accountant and Legal Expert...';
             document.getElementById('contactPhone').innerText = data.phone || '8955152133 | 8502000060';
             document.getElementById('contactEmail').innerText = data.email || 'pradeep.jat1996@gmail.com';
             document.getElementById('contactLocation').innerText = data.location || 'Sikar, Rajasthan';
             
             if(data.linkedin) {
-                document.getElementById('linkedinBtn').href = data.linkedin;
-                document.getElementById('linkedinContactLink').href = data.linkedin;
+                const linkedinBtns = document.querySelectorAll('#linkedinBtn, #linkedinContactLink');
+                linkedinBtns.forEach(btn => { if(btn) btn.href = data.linkedin; });
             }
             
             if(data.photoUrl) {
-                document.getElementById('aboutImg').innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
+                const aboutImg = document.getElementById('aboutImg');
+                if(aboutImg) aboutImg.innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
             }
             
             if(data.stats) {
-                document.getElementById('stat1').innerText = data.stats.exp || '7+';
-                document.getElementById('stat2').innerText = data.stats.clients || '500+';
-                document.getElementById('stat3').innerText = data.stats.success || '100%';
+                const stat1 = document.getElementById('stat1');
+                const stat2 = document.getElementById('stat2');
+                const stat3 = document.getElementById('stat3');
+                if(stat1) stat1.innerText = data.stats.exp || '7+';
+                if(stat2) stat2.innerText = data.stats.clients || '500+';
+                if(stat3) stat3.innerText = data.stats.success || '100%';
             }
             
             // Services
             const services = data.services || [
-                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions including Tally, GST, TDS" },
-                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting, compliance, documentation" },
-                { icon: "fa-file-invoice", title: "Taxation", desc: "GST filing, Income Tax, TDS returns" },
-                { icon: "fa-briefcase", title: "Business Consulting", desc: "Financial planning and business advisory" }
+                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions" },
+                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting" },
+                { icon: "fa-file-invoice", title: "Taxation", desc: "GST filing, TDS returns" }
             ];
-            document.getElementById('servicesGrid').innerHTML = services.map(s => `
-                <div class="service-card">
-                    <i class="fas ${s.icon}"></i>
-                    <h3>${s.title}</h3>
-                    <p>${s.desc}</p>
-                </div>
-            `).join('');
+            const servicesGrid = document.getElementById('servicesGrid');
+            if(servicesGrid) {
+                servicesGrid.innerHTML = services.map(s => `
+                    <div class="service-card">
+                        <i class="fas ${s.icon}"></i>
+                        <h3>${s.title}</h3>
+                        <p>${s.desc}</p>
+                    </div>
+                `).join('');
+            }
             
             // Experience
             const experiences = data.experiences || [
-                { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS, and legal notice drafting." }
+                { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS" }
             ];
-            document.getElementById('timeline').innerHTML = experiences.map(exp => `
-                <div class="timeline-item">
-                    <div class="timeline-year">${exp.year}</div>
-                    <h3>${exp.title}</h3>
-                    <p><strong>${exp.company}</strong></p>
-                    <p>${exp.desc}</p>
-                </div>
-            `).join('');
+            const timeline = document.getElementById('timeline');
+            if(timeline) {
+                timeline.innerHTML = experiences.map(exp => `
+                    <div class="timeline-item">
+                        <div class="timeline-year">${exp.year}</div>
+                        <h3>${exp.title}</h3>
+                        <p><strong>${exp.company}</strong></p>
+                        <p>${exp.desc}</p>
+                    </div>
+                `).join('');
+            }
             
-            // Skills - Accounting & Legal Related
-            const skills = data.skills || [
-                'Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 
-                'Legal Drafting', 'MS Excel Advanced', 'MIS Reporting', 
-                'Income Tax', 'Company Law', 'Contract Drafting', 'Bank Reconciliation', 'Auditing'
-            ];
-            document.getElementById('skillsContainer').innerHTML = skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+            // Skills
+            const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel'];
+            const skillsContainer = document.getElementById('skillsContainer');
+            if(skillsContainer) {
+                skillsContainer.innerHTML = skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+            }
             
             // Reviews
             const reviews = data.reviews || [
-                { name: "Radheshyam Saini", text: "Very nice behavior and complete accounting solution" },
-                { name: "Neha Gupta", text: "Excellent GST filing service. Highly professional!" }
+                { name: "Radheshyam Saini", text: "Very nice behavior and complete accounting solution" }
             ];
-            document.getElementById('reviewsGrid').innerHTML = reviews.map(r => `
-                <div class="review-card">
-                    <i class="fas fa-quote-left"></i>
-                    <p>${r.text}</p>
-                    <p class="reviewer">- ${r.name}</p>
-                </div>
-            `).join('');
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            if(reviewsGrid) {
+                reviewsGrid.innerHTML = reviews.map(r => `
+                    <div class="review-card">
+                        <i class="fas fa-quote-left"></i>
+                        <p>${r.text}</p>
+                        <p class="reviewer">- ${r.name}</p>
+                    </div>
+                `).join('');
+            }
         });
     }
     
-    // Chat Functions with Unique User ID
-    function registerUser() {
-        const name = document.getElementById('chatName').value.trim();
-        const email = document.getElementById('chatEmail').value.trim();
+    // ========== CHAT SYSTEM FUNCTIONS ==========
+    
+    function checkExistingChatUser() {
+        const savedUser = localStorage.getItem('chat_user_data');
+        if(savedUser) {
+            try {
+                currentChatUser = JSON.parse(savedUser);
+                database.ref('chat_users/' + currentChatUser.id).once('value', (snapshot) => {
+                    if(snapshot.exists()) {
+                        showChatArea();
+                        loadChatMessages();
+                        setupTypingListener();
+                    } else {
+                        localStorage.removeItem('chat_user_data');
+                        currentChatUser = null;
+                    }
+                });
+            } catch(e) {
+                localStorage.removeItem('chat_user_data');
+            }
+        }
+    }
+    
+    window.registerChatUser = function() {
+        const name = document.getElementById('chatFullName').value.trim();
+        const email = document.getElementById('chatEmailId').value.trim();
         
-        if(!name || !email) {
-            alert('Please enter both name and email');
+        if(!name) {
+            alert('❌ Please enter your name');
+            return;
+        }
+        if(!email || !email.includes('@')) {
+            alert('❌ Please enter a valid email');
             return;
         }
         
-        // Create unique user ID
-        const userId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 8);
-        currentUser = { id: userId, name: name, email: email };
-        
-        // Save to localStorage
-        localStorage.setItem('chatUser', JSON.stringify(currentUser));
-        
-        // Register in Firebase
-        database.ref('chat_users/' + userId).set({
+        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        const userData = {
+            id: userId,
             name: name,
             email: email,
-            registeredAt: Date.now()
+            registeredAt: Date.now(),
+            lastActive: Date.now()
+        };
+        
+        database.ref('chat_users/' + userId).set(userData).then(() => {
+            currentChatUser = userData;
+            localStorage.setItem('chat_user_data', JSON.stringify(userData));
+            
+            database.ref('chats').push({
+                userId: userId,
+                userName: "Pradeep Kumar (Admin)",
+                message: `👋 Welcome ${name}! Thanks for connecting. How can I help you today?`,
+                timestamp: Date.now(),
+                read: false,
+                isAdmin: true
+            });
+            
+            showChatArea();
+            loadChatMessages();
+            setupTypingListener();
+            
+            document.getElementById('chatFullName').value = '';
+            document.getElementById('chatEmailId').value = '';
+        }).catch(err => {
+            console.error(err);
+            alert('❌ Registration failed. Please try again.');
         });
-        
-        document.getElementById('chatLogin').style.display = 'none';
-        document.getElementById('chatArea').style.display = 'block';
-        document.getElementById('chatUserInfo').innerHTML = `Logged in as: <strong>${name}</strong>`;
-        
-        loadMessages();
+    };
+    
+    function showChatArea() {
+        const chatLogin = document.getElementById('chatLogin');
+        const chatArea = document.getElementById('chatArea');
+        const loggedUserName = document.getElementById('loggedUserName');
+        if(chatLogin) chatLogin.style.display = 'none';
+        if(chatArea) chatArea.style.display = 'block';
+        if(loggedUserName && currentChatUser) loggedUserName.innerText = currentChatUser.name;
     }
     
-    function loadMessages() {
-        const userId = currentUser.id;
-        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
+    function loadChatMessages() {
+        if(!currentChatUser) return;
+        
+        const userId = currentChatUser.id;
+        const messagesRef = database.ref('chats').orderByChild('timestamp').limitToLast(100);
+        
+        messagesRef.on('value', (snapshot) => {
             const messages = [];
-            snapshot.forEach(child => messages.push(child.val()));
+            snapshot.forEach(child => {
+                messages.push({ id: child.key, ...child.val() });
+            });
+            messages.sort((a, b) => a.timestamp - b.timestamp);
+            
             const messagesDiv = document.getElementById('messagesDiv');
-            messagesDiv.innerHTML = messages.map(m => `
-                <div class="message ${m.userId === userId ? 'user' : 'admin'}">
-                    <strong>${m.userName}:</strong> ${m.message}
-                    <small style="display:block; font-size:9px;">${new Date(m.timestamp).toLocaleString()}</small>
-                </div>
-            `).join('');
+            if(!messagesDiv) return;
+            
+            if(messages.length === 0) {
+                messagesDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">No messages yet. Start the conversation!</div>';
+                return;
+            }
+            
+            messagesDiv.innerHTML = messages.map(m => {
+                const isUser = m.userId === userId;
+                return `
+                    <div class="message ${isUser ? 'user' : 'admin'}" style="margin-bottom: 15px; ${isUser ? 'text-align: right;' : 'text-align: left;'}">
+                        <div style="display: inline-block; max-width: 85%; ${isUser ? 'background: var(--gold);' : 'background: var(--primary);'} padding: 10px 15px; border-radius: 15px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
+                            <div style="font-size: 11px; opacity: 0.7; margin-bottom: 4px;">${m.userName}</div>
+                            <div style="word-wrap: break-word;">${escapeHtml(m.message)}</div>
+                            <div style="font-size: 9px; opacity: 0.5; margin-top: 5px;">${new Date(m.timestamp).toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         });
     }
     
-    function sendMessage() {
-        const input = document.getElementById('messageInput');
-        if(input.value.trim() && currentUser) {
-            database.ref('chats').push({
-                userId: currentUser.id,
-                userName: currentUser.name,
-                message: input.value,
-                timestamp: Date.now(),
-                read: false
+    function setupTypingListener() {
+        if(!currentChatUser) return;
+        
+        database.ref('typing_status/admin').on('value', (snapshot) => {
+            const isTyping = snapshot.val();
+            const indicator = document.getElementById('typingIndicator');
+            if(indicator) {
+                if(isTyping) {
+                    indicator.style.display = 'block';
+                    indicator.innerHTML = '<i class="fas fa-ellipsis-h"></i> Admin is typing...';
+                } else {
+                    indicator.style.display = 'none';
+                }
+            }
+        });
+        
+        const messageInput = document.getElementById('messageInput');
+        if(messageInput) {
+            messageInput.addEventListener('input', () => {
+                database.ref('typing_status/' + currentChatUser.id).set(true);
+                if(typingTimeout) clearTimeout(typingTimeout);
+                typingTimeout = setTimeout(() => {
+                    database.ref('typing_status/' + currentChatUser.id).set(false);
+                }, 1000);
             });
+        }
+    }
+    
+    window.sendChatMessage = function() {
+        if(!currentChatUser) {
+            alert('Please login first');
+            return;
+        }
+        
+        const input = document.getElementById('messageInput');
+        const message = input.value.trim();
+        
+        if(!message) {
+            alert('Please enter a message');
+            return;
+        }
+        
+        const sendBtn = document.querySelector('#messageInput + button');
+        if(sendBtn) sendBtn.disabled = true;
+        
+        database.ref('chats').push({
+            userId: currentChatUser.id,
+            userName: currentChatUser.name,
+            message: message,
+            timestamp: Date.now(),
+            read: false,
+            isAdmin: false
+        }).then(() => {
             input.value = '';
+            database.ref('typing_status/' + currentChatUser.id).set(false);
+        }).catch(err => {
+            console.error(err);
+            alert('❌ Failed to send message');
+        }).finally(() => {
+            if(sendBtn) sendBtn.disabled = false;
+        });
+    };
+    
+    window.logoutChatUser = function() {
+        if(currentChatUser) {
+            database.ref('typing_status/' + currentChatUser.id).set(false);
         }
-    }
-    
-    function logoutChat() {
-        localStorage.removeItem('chatUser');
-        currentUser = null;
-        document.getElementById('chatLogin').style.display = 'block';
-        document.getElementById('chatArea').style.display = 'none';
-        document.getElementById('chatName').value = '';
-        document.getElementById('chatEmail').value = '';
-    }
-    
-    // Check saved chat user
-    const savedUser = localStorage.getItem('chatUser');
-    if(savedUser) {
-        try {
-            currentUser = JSON.parse(savedUser);
-            document.getElementById('chatLogin').style.display = 'none';
-            document.getElementById('chatArea').style.display = 'block';
-            document.getElementById('chatUserInfo').innerHTML = `Logged in as: <strong>${currentUser.name}</strong>`;
-            loadMessages();
-        } catch(e) {
-            console.log('Invalid saved user');
-        }
-    }
-    
-    // Download CV PDF - Professional Format
-    document.getElementById('downloadCvBtn').addEventListener('click', () => {
-        const name = document.getElementById('aboutName').innerText;
-        const about = document.getElementById('aboutDesc').innerText;
-        const skills = document.getElementById('skillsContainer').innerHTML;
-        const experience = document.getElementById('timeline').innerHTML;
-        const phone = document.getElementById('contactPhone').innerText;
-        const email = document.getElementById('contactEmail').innerText;
+        currentChatUser = null;
+        localStorage.removeItem('chat_user_data');
         
-        const element = document.createElement('div');
-        element.style.padding = '40px';
-        element.style.fontFamily = 'Inter, sans-serif';
-        element.style.maxWidth = '800px';
-        element.style.margin = '0 auto';
-        element.innerHTML = `
-            <div style="text-align:center; border-bottom:2px solid #D4AF37; padding-bottom:20px; margin-bottom:20px;">
-                <h1 style="color:#0a0a0a;">${name}</h1>
-                <p style="color:#D4AF37; font-size:18px;">Accountant & Legal Expert</p>
-            </div>
-            <div style="margin-bottom:20px;">
-                <h3 style="color:#D4AF37;">📋 Professional Summary</h3>
-                <p style="line-height:1.6;">${about}</p>
-            </div>
-            <div style="margin-bottom:20px;">
-                <h3 style="color:#D4AF37;">⚡ Core Skills</h3>
-                <div style="display:flex; flex-wrap:wrap; gap:10px;">${skills}</div>
-            </div>
-            <div style="margin-bottom:20px;">
-                <h3 style="color:#D4AF37;">💼 Work Experience</h3>
-                ${experience}
-            </div>
-            <div style="margin-top:30px; padding-top:20px; border-top:1px solid #ddd;">
-                <h3 style="color:#D4AF37;">📞 Contact</h3>
-                <p>Phone: ${phone}</p>
-                <p>Email: ${email}</p>
-            </div>
-            <div style="text-align:center; margin-top:30px; color:#999; font-size:12px;">
-                <p>© 2026 ${name} | Professional CV</p>
-            </div>
-        `;
+        database.ref('chats').off();
+        database.ref('typing_status').off();
         
-        const opt = { 
-            margin: [0.5, 0.5, 0.5, 0.5], 
-            filename: `${name.replace(/\s/g, '_')}_CV.pdf`, 
-            image: { type: 'jpeg', quality: 0.98 }, 
-            html2canvas: { scale: 2, letterRendering: true }, 
-            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } 
-        };
-        html2pdf().set(opt).from(element).save();
-    });
+        const chatLogin = document.getElementById('chatLogin');
+        const chatArea = document.getElementById('chatArea');
+        if(chatLogin) chatLogin.style.display = 'block';
+        if(chatArea) chatArea.style.display = 'none';
+        
+        const nameInput = document.getElementById('chatFullName');
+        const emailInput = document.getElementById('chatEmailId');
+        if(nameInput) nameInput.value = '';
+        if(emailInput) emailInput.value = '';
+    };
     
-    // Create CV Modal
-    function submitCvRequest() {
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // PDF Download
+    const downloadBtn = document.getElementById('downloadCvBtn');
+    if(downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+            const name = document.getElementById('aboutName').innerText;
+            const about = document.getElementById('aboutDesc').innerText;
+            const skills = document.getElementById('skillsContainer').innerHTML;
+            const experience = document.getElementById('timeline').innerHTML;
+            const phone = document.getElementById('contactPhone').innerText;
+            const email = document.getElementById('contactEmail').innerText;
+            
+            const element = document.createElement('div');
+            element.style.padding = '40px';
+            element.style.fontFamily = 'Inter, sans-serif';
+            element.innerHTML = `
+                <div style="text-align:center; border-bottom:2px solid #D4AF37; padding-bottom:20px;">
+                    <h1>${name}</h1>
+                    <p style="color:#D4AF37;">Accountant & Legal Expert</p>
+                </div>
+                <div style="margin:20px 0;"><h3>Professional Summary</h3><p>${about}</p></div>
+                <div style="margin:20px 0;"><h3>Skills</h3><div>${skills}</div></div>
+                <div style="margin:20px 0;"><h3>Experience</h3>${experience}</div>
+                <div><h3>Contact</h3><p>${phone}</p><p>${email}</p></div>
+            `;
+            html2pdf().set({ margin: 0.5, filename: `${name}_CV.pdf`, jsPDF: { format: 'a4' } }).from(element).save();
+        });
+    }
+    
+    // Modal functions
+    window.submitCvRequest = function() {
         const data = {
-            name: document.getElementById('cvName').value,
-            email: document.getElementById('cvEmail').value,
-            phone: document.getElementById('cvPhone').value,
-            skills: document.getElementById('cvSkills').value,
+            name: document.getElementById('cvName')?.value,
+            email: document.getElementById('cvEmail')?.value,
+            phone: document.getElementById('cvPhone')?.value,
+            skills: document.getElementById('cvSkills')?.value,
             timestamp: Date.now()
         };
         database.ref('cv_requests').push(data);
-        alert('✅ CV request submitted! We will email you the template within 24 hours.');
+        alert('✅ CV request submitted!');
         closeModal();
-        document.getElementById('cvName').value = '';
-        document.getElementById('cvEmail').value = '';
-        document.getElementById('cvPhone').value = '';
-        document.getElementById('cvSkills').value = '';
+    };
+    
+    window.closeModal = function() {
+        const modal = document.getElementById('createCvModal');
+        if(modal) modal.style.display = 'none';
+    };
+    
+    // Tab switching
+    function initTabs() {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabId = btn.dataset.tab;
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                const activeTab = document.getElementById(tabId);
+                if(activeTab) activeTab.classList.add('active');
+            });
+        });
     }
     
-    function closeModal() {
-        document.getElementById('createCvModal').style.display = 'none';
-    }
-    
-    // Show Create CV Modal on scroll
-    let modalShown = false;
-    window.addEventListener('scroll', () => {
-        if(!modalShown && window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
-            setTimeout(() => {
-                document.getElementById('createCvModal').style.display = 'flex';
-                modalShown = true;
-            }, 2000);
-        }
-    });
-    
+    // Initialize
     loadPublicData();
+    checkExistingChatUser();
+    setTimeout(initTabs, 500);
     
-    // Make functions global
-    window.registerUser = registerUser;
-    window.sendMessage = sendMessage;
-    window.logoutChat = logoutChat;
-    window.submitCvRequest = submitCvRequest;
-    window.closeModal = closeModal;
+    // Views counter
+    const viewsRef = database.ref('cv_views');
+    viewsRef.on('value', (snapshot) => {
+        const viewSpan = document.getElementById('viewCount');
+        if(viewSpan) viewSpan.innerText = snapshot.val() || 0;
+    });
+    viewsRef.transaction(v => (v || 0) + 1);
 </script>
 </body>
 </html>
