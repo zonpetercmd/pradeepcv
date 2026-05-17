@@ -3,476 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pradeep Kumar | Accountant & Legal Expert</title>
-    <!-- Google Fonts & FontAwesome Icons for Advance Look -->
+    <title>Admin Panel - Pradeep CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        :root {
-            --primary: #0f2b3d;
-            --secondary: #1a4a6f;
-            --accent: #eab308;
-            --text-light: #f3f4f6;
-            --bg-card: #ffffff;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
         }
-
         body {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: #333;
-            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            background: #0f172a;
             padding: 40px 20px;
         }
-
         .container {
-            max-width: 1100px;
+            max-width: 1000px;
             margin: 0 auto;
         }
-
-        /* Top Bar for Analytics */
-        .analytics-bar {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .counter-badge {
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--accent);
-            padding: 10px 24px;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        /* Profile Header */
-        .profile-card {
-            background: var(--bg-card);
-            border-radius: 30px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 10px;
-            background: linear-gradient(90deg, var(--accent), #f59e0b);
-        }
-
-        .profile-card h1 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .profile-card p {
-            color: #64748b;
-            font-size: 1.1rem;
-            margin-top: 5px;
-            font-weight: 400;
-        }
-
-        .status-badge {
-            background: #dcfce7;
-            color: #15803d;
-            padding: 6px 16px;
-            border-radius: 50px;
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-item {
-            background: var(--bg-card);
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-item i {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-
-        .stat-val {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .stat-lbl {
-            font-size: 0.85rem;
-            color: #64748b;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        /* Main Grid Structure */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-        }
-
-        @media (max-width: 850px) {
-            .main-layout { grid-template-columns: 1fr; }
-        }
-
-        .column {
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-        }
-
-        .card h2 {
-            color: var(--primary);
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 10px;
-        }
-
-        .card h2 i { color: var(--accent); }
-
-        /* Contact Info list */
-        .contact-list { list-style: none; }
-        .contact-list li {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            color: #475569;
-        }
-        .contact-list li i {
-            color: var(--secondary);
-            width: 20px;
-        }
-
-        /* Skill Tags */
-        .skills-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .skill-tag {
-            background: #f1f5f9;
-            color: var(--primary);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
-        .skill-tag:hover {
-            background: var(--primary);
+        .admin-header {
+            background: #1e293b;
             color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-
-        /* Timeline styling */
-        .timeline {
-            position: relative;
-            border-left: 2px solid #e2e8f0;
-            padding-left: 20px;
-            margin-left: 10px;
-        }
-
-        .timeline-node {
-            position: relative;
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
-
-        .timeline-node::before {
-            content: '';
-            position: absolute;
-            left: -27px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid white;
+        .card h2 {
+            color: #0f2b3d;
+            margin-bottom: 20px;
+            border-left: 4px solid #eab308;
+            padding-left: 15px;
         }
-
-        .time-period {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--accent);
+        .form-group {
+            margin-bottom: 15px;
         }
-
-        .time-title {
-            font-size: 1.1rem;
+        label {
+            display: block;
             font-weight: 600;
-            color: var(--primary);
+            margin-bottom: 5px;
+            color: #334155;
         }
-
-        /* Buttons */
-        .btn {
-            background: var(--primary);
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-family: inherit;
+        }
+        textarea {
+            min-height: 100px;
+        }
+        button {
+            background: #0f2b3d;
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 15px;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
+            padding: 12px 24px;
+            border-radius: 12px;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #eab308;
+            color: #0f2b3d;
+        }
+        .btn-danger {
+            background: #dc2626;
+        }
+        .preview-link {
+            background: #eab308;
+            color: #0f2b3d;
+            padding: 10px 20px;
+            border-radius: 12px;
             text-decoration: none;
-            margin-top: 10px;
+            font-weight: 600;
         }
-
-        .btn:hover {
-            background: var(--accent);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(234, 179, 8, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        footer {
-            text-align: center;
-            color: rgba(255,255,255,0.6);
-            margin-top: 50px;
-            font-size: 0.85rem;
+        .success-msg {
+            background: #dcfce7;
+            color: #15803d;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
         }
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- Live Analytics Top section -->
-    <div class="analytics-bar">
-        <div class="counter-badge">
-            <i class="fa-solid fa-chart-line"></i> Total CV Views: <span id="viewCount">Connecting...</span>
+    <div class="admin-header">
+        <h1><i class="fa-solid fa-lock"></i> Admin Panel</h1>
+        <div>
+            <a href="index.html" class="preview-link" target="_blank">👁️ View Public CV</a>
+            <button id="logoutBtn" style="background:#dc2626; margin-left:10px;">🚪 Logout</button>
         </div>
     </div>
-
-    <!-- Main Header profile -->
-    <div class="profile-card">
-        <h1>PRADEEP KUMAR</h1>
-        <p>Accountant | Compliance Expert | Legal Support</p>
-        <span class="status-badge"><i class="fa-solid fa-circle-check"></i> 7+ Years Experience | Immediate Joining</span>
-    </div>
-
-    <!-- Quick Stats Grid -->
-    <div class="stats-grid">
-        <div class="stat-item">
-            <i class="fa-solid fa-briefcase"></i>
-            <div class="stat-val">7+ Years</div>
-            <div class="stat-lbl">Experience</div>
-        </div>
-        <div class="stat-item">
-            <i class="fa-solid fa-scale-balanced"></i>
-            <div class="stat-val">LLB</div>
-            <div class="stat-lbl">Legal Expert</div>
-        </div>
-        <div class="stat-item">
-            <i class="fa-solid fa-money-bill-transfer"></i>
-            <div class="stat-val">500+</div>
-            <div class="stat-lbl">BRS / Month</div>
-        </div>
-        <div class="stat-item">
-            <i class="fa-solid fa-shield-halved"></i>
-            <div class="stat-val">100%</div>
-            <div class="stat-lbl">Compliance Rate</div>
-        </div>
-    </div>
-
-    <!-- Two Column Layout -->
-    <div class="main-layout">
-        <!-- Left Column -->
-        <div class="column">
-            <div class="card">
-                <h2><i class="fa-solid fa-address-book"></i> Contact Details</h2>
-                <ul class="contact-list">
-                    <li><i class="fa-solid fa-phone"></i> 8955152133 | 8502000060</li>
-                    <li><i class="fa-solid fa-envelope"></i> pradeep.jat1996@gmail.com</li>
-                    <li><i class="fa-solid fa-location-dot"></i> Sikar, Rajasthan</li>
-                    <li><i class="fa-solid fa-cake-candles"></i> 27 Feb 1996</li>
-                </ul>
-                <button class="btn" id="emailBtn"><i class="fa-solid fa-paper-plane"></i> Send Email</button>
+    
+    <div id="successMsg" class="success-msg">✅ Data updated successfully!</div>
+    
+    <form id="editForm">
+        <!-- Basic Info -->
+        <div class="card">
+            <h2><i class="fa-regular fa-user"></i> Basic Information</h2>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="fullName" name="fullName">
             </div>
-
-            <div class="card">
-                <h2><i class="fa-solid fa-gears"></i> Core Skills</h2>
-                <div class="skills-container">
-                    <span class="skill-tag">Tally Prime</span>
-                    <span class="skill-tag">GST Filing</span>
-                    <span class="skill-tag">TDS Compliance</span>
-                    <span class="skill-tag">PF & ESIC</span>
-                    <span class="skill-tag">Legal Drafting</span>
-                    <span class="skill-tag">MS Excel (Advanced)</span>
-                    <span class="skill-tag">MIS Reporting</span>
-                </div>
+            <div class="form-group">
+                <label>Designation</label>
+                <input type="text" id="designation" name="designation">
+            </div>
+            <div class="form-group">
+                <label>Status Badge</label>
+                <input type="text" id="statusBadge" name="statusBadge">
+            </div>
+            <div class="form-group">
+                <label>About Me</label>
+                <textarea id="about" name="about"></textarea>
             </div>
         </div>
-
-        <!-- Right Column -->
-        <div class="column">
-            <div class="card">
-                <h2><i class="fa-solid fa-building-columns"></i> Professional Life</h2>
-                <div style="margin-bottom: 15px;">
-                    <strong style="color: var(--secondary); font-size: 1.1rem;">Matrix Education, Sikar</strong>
-                    <span style="display:block; font-size: 0.85rem; color:#64748b; margin-bottom: 10px;">Senior Accountant & Legal Executive (2021 - 2026)</span>
-                </div>
-                <ul style="margin-left: 20px; color: #475569; line-height: 1.7;">
-                    <li>Managed end-to-end accounting operations using Tally Prime.</li>
-                    <li>Supervised high-volume Bank Reconciliations (500+ accounts monthly).</li>
-                    <li>Drafted professional replies to complex legal and statutory notices.</li>
-                    <li>Prepared weekly and monthly MIS reports for the management.</li>
-                </ul>
+        
+        <!-- Contact -->
+        <div class="card">
+            <h2><i class="fa-regular fa-address-card"></i> Contact Details</h2>
+            <div class="form-group">
+                <label>Phone</label>
+                <input type="text" id="phone" name="phone">
             </div>
-
-            <div class="card">
-                <h2><i class="fa-solid fa-graduation-cap"></i> Education Timeline</h2>
-                <div class="timeline">
-                    <div class="timeline-node">
-                        <div class="time-period">2021 - 2023</div>
-                        <div class="time-title">M.Com (59.67%)</div>
-                    </div>
-                    <div class="timeline-node">
-                        <div class="time-period">2017 - 2020</div>
-                        <div class="time-title">LLB (54.5%)</div>
-                    </div>
-                    <div class="timeline-node">
-                        <div class="time-period">2013 - 2016</div>
-                        <div class="time-title">B.Com</div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" name="email">
             </div>
-
-            <div class="card">
-                <h2><i class="fa-solid fa-trophy"></i> Key Achievements</h2>
-                <ul style="margin-left: 20px; color: #475569; line-height: 1.7;">
-                    <li>Successfully reduced overall GST reconciliation errors by 30%.</li>
-                    <li>Drafted and cleared 10+ crucial legal notice responses.</li>
-                    <li>Maintained a flawless 100% on-time corporate compliance record.</li>
-                </ul>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="location" name="location">
             </div>
-
-            <div class="card" style="text-align: center;">
-                <h2><i class="fa-solid fa-share-nodes"></i> Share Profile</h2>
-                <p style="color: #64748b; margin-bottom: 15px; font-size: 0.9rem;">Copy this link to quickly send to potential employers.</p>
-                <button class="btn btn-outline" id="copyBtn"><i class="fa-solid fa-link"></i> Copy Portfolio Link</button>
+            <div class="form-group">
+                <label>Birthday</label>
+                <input type="text" id="birthday" name="birthday">
             </div>
         </div>
-    </div>
-
-    <footer>
-        © 2026 Pradeep Kumar | Professional Digital CV | Powered by Firebase & Vercel
-    </footer>
+        
+        <!-- Experience -->
+        <div class="card">
+            <h2><i class="fa-regular fa-building"></i> Experience</h2>
+            <div id="expContainer"></div>
+            <button type="button" onclick="addExperience()">+ Add Experience</button>
+        </div>
+        
+        <!-- Education -->
+        <div class="card">
+            <h2><i class="fa-regular fa-graduation-cap"></i> Education</h2>
+            <div id="eduContainer"></div>
+            <button type="button" onclick="addEducation()">+ Add Education</button>
+        </div>
+        
+        <!-- Skills -->
+        <div class="card">
+            <h2><i class="fa-regular fa-code"></i> Skills</h2>
+            <div class="form-group">
+                <label>Skills (comma separated)</label>
+                <input type="text" id="skills" placeholder="Tally, GST, TDS, Legal Drafting">
+            </div>
+        </div>
+        
+        <div class="card">
+            <button type="submit"><i class="fa-regular fa-floppy-disk"></i> Save All Changes</button>
+            <button type="button" id="resetBtn">↺ Reset</button>
+        </div>
+    </form>
 </div>
 
-<!-- Firebase Scripts (Compat Version for Vanilla HTML) -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
 <script>
-    // ⚠️ AUTOMATICALLY GENERATED CONFIG BASED ON YOUR ID ⚠️
     const firebaseConfig = {
         authDomain: "pradeep-cv-1299a.firebaseapp.com",
         databaseURL: "https://pradeep-cv-1299a-default-rtdb.asia-southeast1.firebasedatabase.app/",
         projectId: "pradeep-cv-1299a",
         storageBucket: "pradeep-cv-1299a.appspot.com"
     };
-
-    // Firebase Initialization
+    
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
-
-    // 1. Live Views Counter
-    const viewsRef = database.ref('cv_views');
     
-    viewsRef.on('value', (snapshot) => {
-        const currentViews = snapshot.val() || 0;
-        document.getElementById('viewCount').innerText = currentViews;
-    });
-
-    viewsRef.transaction((currentValue) => {
-        return (currentValue || 0) + 1;
-    });
-
-    // 2. Activity Logs Tracker
-    function logActivity(actionName) {
-        const logsRef = database.ref('activity_logs').push();
-        logsRef.set({
-            action: actionName,
-            time: new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
+    let experiences = [];
+    let educations = [];
+    
+    // Check admin access
+    if (localStorage.getItem('cv_admin') !== 'true') {
+        alert('Access Denied! Redirecting to public page.');
+        window.location.href = 'index.html';
+    }
+    
+    function loadData() {
+        database.ref('cv_data').once('value', (snapshot) => {
+            const data = snapshot.val() || {};
+            document.getElementById('fullName').value = data.fullName || '';
+            document.getElementById('designation').value = data.designation || '';
+            document.getElementById('statusBadge').value = data.statusBadge || '';
+            document.getElementById('about').value = data.about || '';
+            document.getElementById('phone').value = data.phone || '';
+            document.getElementById('email').value = data.email || '';
+            document.getElementById('location').value = data.location || '';
+            document.getElementById('birthday').value = data.birthday || '';
+            document.getElementById('skills').value = (data.skills || []).join(', ');
+            
+            experiences = data.experiences || [];
+            educations = data.educations || [];
+            
+            renderExperiences();
+            renderEducations();
         });
     }
-
-    // Buttons Functionalities
-    document.getElementById('copyBtn').addEventListener('click', function() {
-        navigator.clipboard.writeText(window.location.href);
-        alert('✅ Portfolio Link copied successfully!');
-        logActivity('Link Copied');
+    
+    function renderExperiences() {
+        const container = document.getElementById('expContainer');
+        container.innerHTML = experiences.map((exp, i) => `
+            <div style="border:1px solid #e2e8f0; padding:15px; margin-bottom:10px; border-radius:12px;">
+                <input type="text" placeholder="Year (e.g., 2021-2026)" value="${exp.year}" onchange="updateExp(${i}, 'year', this.value)">
+                <input type="text" placeholder="Title" value="${exp.title}" onchange="updateExp(${i}, 'title', this.value)" style="margin-top:8px;">
+                <input type="text" placeholder="Company" value="${exp.company}" onchange="updateExp(${i}, 'company', this.value)" style="margin-top:8px;">
+                <textarea placeholder="Description" onchange="updateExp(${i}, 'desc', this.value)" style="margin-top:8px;">${exp.desc}</textarea>
+                <button type="button" onclick="removeExp(${i})" style="background:#dc2626; margin-top:8px;">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    function renderEducations() {
+        const container = document.getElementById('eduContainer');
+        container.innerHTML = educations.map((edu, i) => `
+            <div style="border:1px solid #e2e8f0; padding:15px; margin-bottom:10px; border-radius:12px;">
+                <input type="text" placeholder="Year" value="${edu.year}" onchange="updateEdu(${i}, 'year', this.value)">
+                <input type="text" placeholder="Title" value="${edu.title}" onchange="updateEdu(${i}, 'title', this.value)" style="margin-top:8px;">
+                <input type="text" placeholder="Percentage/Grade" value="${edu.percent}" onchange="updateEdu(${i}, 'percent', this.value)" style="margin-top:8px;">
+                <button type="button" onclick="removeEdu(${i})" style="background:#dc2626; margin-top:8px;">Remove</button>
+            </div>
+        `).join('');
+    }
+    
+    function updateExp(index, field, value) {
+        experiences[index][field] = value;
+    }
+    
+    function updateEdu(index, field, value) {
+        educations[index][field] = value;
+    }
+    
+    function addExperience() {
+        experiences.push({ year: '2024', title: 'New Role', company: 'Company', desc: 'Description' });
+        renderExperiences();
+    }
+    
+    function addEducation() {
+        educations.push({ year: '2024', title: 'New Degree', percent: 'Pending' });
+        renderEducations();
+    }
+    
+    function removeExp(index) {
+        experiences.splice(index, 1);
+        renderExperiences();
+    }
+    
+    function removeEdu(index) {
+        educations.splice(index, 1);
+        renderEducations();
+    }
+    
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim());
+        
+        const data = {
+            fullName: document.getElementById('fullName').value,
+            designation: document.getElementById('designation').value,
+            statusBadge: document.getElementById('statusBadge').value,
+            about: document.getElementById('about').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            location: document.getElementById('location').value,
+            birthday: document.getElementById('birthday').value,
+            skills: skillsArray,
+            experiences: experiences,
+            educations: educations
+        };
+        
+        await database.ref('cv_data').set(data);
+        document.getElementById('successMsg').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('successMsg').style.display = 'none';
+        }, 2000);
     });
-
-    document.getElementById('emailBtn').addEventListener('click', function() {
-        window.location.href = 'mailto:pradeep.jat1996@gmail.com';
-        logActivity('Clicked Email Button');
+    
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('cv_admin');
+        window.location.href = 'index.html';
     });
+    
+    document.getElementById('resetBtn').addEventListener('click', loadData);
+    
+    loadData();
 </script>
 </body>
 </html>
