@@ -9,17 +9,40 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1400px; margin: 0 auto; }
         .header { background: #D4AF37; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
         .card h2 { color: #D4AF37; margin-bottom: 20px; }
         input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: none; background: #2a2a2a; color: white; }
         button { background: #D4AF37; color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-right: 10px; margin-top: 5px; }
-        .exp-item, .review-item { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
+        .exp-item { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .chat-msg { background: #2a2a2a; padding: 12px; border-radius: 10px; margin-bottom: 10px; }
-        .reply-btn { background: #D4AF37; padding: 5px 12px; font-size: 12px; margin-top: 8px; }
-        @media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
+        
+        /* WhatsApp Style Chat */
+        .chat-layout { display: grid; grid-template-columns: 350px 1fr; gap: 20px; min-height: 600px; }
+        .clients-list { background: #1a1a1a; border-radius: 15px; overflow-y: auto; max-height: 600px; }
+        .client-item { padding: 15px; border-bottom: 1px solid #333; cursor: pointer; transition: all 0.3s; }
+        .client-item:hover { background: #2a2a2a; }
+        .client-item.active { background: #D4AF37; color: #0a0a0a; }
+        .client-name { font-weight: 700; margin-bottom: 5px; }
+        .client-last-msg { font-size: 12px; opacity: 0.7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .client-time { font-size: 10px; opacity: 0.5; }
+        .unread-badge { background: #D4AF37; color: #0a0a0a; border-radius: 50%; padding: 2px 8px; font-size: 11px; margin-left: 10px; }
+        
+        .chat-window { background: #1a1a1a; border-radius: 15px; display: flex; flex-direction: column; }
+        .chat-header { padding: 15px 20px; border-bottom: 1px solid #333; background: #2a2a2a; border-radius: 15px 15px 0 0; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; height: 450px; }
+        .chat-input-area { padding: 15px; border-top: 1px solid #333; display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; margin: 0; background: #2a2a2a; }
+        .message-bubble { margin-bottom: 15px; display: flex; }
+        .message-bubble.admin { justify-content: flex-end; }
+        .message-bubble.user { justify-content: flex-start; }
+        .bubble { max-width: 70%; padding: 10px 15px; border-radius: 18px; }
+        .bubble.admin { background: #D4AF37; color: #0a0a0a; border-bottom-right-radius: 5px; }
+        .bubble.user { background: #2a2a2a; color: white; border-bottom-left-radius: 5px; }
+        .msg-time { font-size: 10px; opacity: 0.6; margin-top: 5px; display: block; }
+        
+        @media (max-width: 768px) { .chat-layout { grid-template-columns: 1fr; } .clients-list { max-height: 300px; } }
     </style>
 </head>
 <body>
@@ -35,25 +58,25 @@
     <div id="msg" style="color:#4ade80; margin-bottom:15px;"></div>
     
     <div class="card">
-        <h2>Profile & Basic Info</h2>
+        <h2>Profile Settings</h2>
         <input type="text" id="fullName" placeholder="Full Name">
         <textarea id="about" placeholder="About Me" rows="3"></textarea>
-        <input type="text" id="photoUrl" placeholder="Photo URL (Upload to imgbb or any hosting)">
+        <input type="text" id="photoUrl" placeholder="Photo URL">
         <input type="text" id="phone" placeholder="Phone">
         <input type="email" id="email" placeholder="Email">
         <input type="text" id="location" placeholder="Location">
         <input type="url" id="linkedin" placeholder="LinkedIn URL">
         <div class="grid-2col">
-            <input type="text" id="statExp" placeholder="Stats - Experience (e.g., 7+)">
-            <input type="text" id="statClients" placeholder="Stats - Clients (e.g., 500+)">
-            <input type="text" id="statSuccess" placeholder="Stats - Success (e.g., 100%)">
+            <input type="text" id="statExp" placeholder="Years Exp (e.g., 7+)">
+            <input type="text" id="statClients" placeholder="Clients (e.g., 500+)">
+            <input type="text" id="statSuccess" placeholder="Success (e.g., 100%)">
         </div>
     </div>
     
     <div class="grid-2col">
         <div class="card">
             <h2>Skills (comma separated)</h2>
-            <textarea id="skills" placeholder="Tally Prime, GST Filing, TDS Compliance, PF & ESIC, Legal Drafting, MS Excel Advanced, MIS Reporting, Income Tax, Company Law, Contract Drafting, Bank Reconciliation, Auditing" rows="4"></textarea>
+            <textarea id="skills" placeholder="Tally Prime, GST Filing, TDS Compliance, PF & ESIC, Legal Drafting, MS Excel" rows="4"></textarea>
         </div>
         <div class="card">
             <h2>Services</h2>
@@ -75,52 +98,34 @@
         </div>
     </div>
     
+    <!-- WhatsApp Style Chat Section -->
     <div class="card">
-// Admin panel mein chat messages dikhane ke liye
-database.ref('chats').orderByChild('timestamp').limitToLast(50).on('value', (snapshot) => {
-    const messages = [];
-    snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
-    messages.reverse();
-    
-    const container = document.getElementById('chatMessagesList');
-    if(container) {
-        container.innerHTML = messages.map(m => `
-            <div style="background: #2a2a2a; padding: 12px; margin-bottom: 10px; border-radius: 10px;">
-                <div style="display: flex; justify-content: space-between;">
-                    <strong style="color: #D4AF37;">${escapeHtml(m.userName)}</strong>
-                    <small>${new Date(m.timestamp).toLocaleString()}</small>
-                </div>
-                <div style="margin: 8px 0;">${escapeHtml(m.message)}</div>
-                <button onclick="replyToChat('${m.userId}', '${escapeHtml(m.userName)}')" style="background: #D4AF37; padding: 5px 12px; border: none; border-radius: 20px; cursor: pointer;">Reply</button>
+        <h2><i class="fas fa-comments"></i> Client Chats (WhatsApp Style)</h2>
+        <div class="chat-layout">
+            <!-- Clients List -->
+            <div class="clients-list" id="clientsList">
+                <div style="padding: 20px; text-align: center; color: #888;">Loading clients...</div>
             </div>
-        `).join('');
-    }
-});
-
-window.replyToChat = function(userId, userName) {
-    const reply = prompt(`Reply to ${userName}:`);
-    if(reply && reply.trim()) {
-        database.ref('chats').push({
-            userId: userId,
-            userName: "Pradeep Kumar (Admin)",
-            message: reply,
-            timestamp: Date.now(),
-            read: false,
-            isAdmin: true
-        });
-        alert('✅ Reply sent!');
-    }
-};
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
+            
+            <!-- Chat Window -->
+            <div class="chat-window">
+                <div class="chat-header" id="chatHeader">
+                    <h3 style="color:#D4AF37;">Select a client to start chatting</h3>
+                </div>
+                <div class="chat-messages" id="chatMessagesList">
+                    <div style="text-align: center; padding: 50px; color: #888;">👈 Select a client from the left</div>
+                </div>
+                <div class="chat-input-area" id="chatInputArea" style="display: none;">
+                    <input type="text" id="replyMessageInput" placeholder="Type your reply...">
+                    <button id="sendReplyBtn"><i class="fas fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <div class="card">
         <h2>CV Requests</h2>
-        <div id="cvRequestsList" style="max-height:300px; overflow-y:auto;"></div>
+        <div id="cvRequestsList" style="max-height: 300px; overflow-y: auto;"></div>
     </div>
     
     <div class="card">
@@ -143,7 +148,10 @@ function escapeHtml(text) {
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // Check admin access
+    let selectedClient = null;
+    let allMessages = [];
+    
+    // Admin Auth
     if(!localStorage.getItem('admin_auth')) {
         const pwd = prompt('Enter Admin Password:');
         if(pwd === 'admin123') {
@@ -154,11 +162,10 @@ function escapeHtml(text) {
         }
     }
     
-    let services = [];
-    let experiences = [];
-    let reviews = [];
+    let services = [], experiences = [], reviews = [];
     
-    function loadData() {
+    // Load Profile Data
+    function loadProfileData() {
         database.ref('public_data').once('value', (snapshot) => {
             const data = snapshot.val() || {};
             document.getElementById('fullName').value = data.fullName || '';
@@ -173,10 +180,7 @@ function escapeHtml(text) {
             document.getElementById('statSuccess').value = (data.stats && data.stats.success) || '100%';
             document.getElementById('skills').value = (data.skills || []).join(', ');
             
-            services = data.services || [
-                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions" },
-                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting" }
-            ];
+            services = data.services || [{ icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions" }];
             experiences = data.experiences || [];
             reviews = data.reviews || [];
             
@@ -184,44 +188,15 @@ function escapeHtml(text) {
             renderExperiences();
             renderReviews();
         });
-        
-        // Load chat messages
-        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
-            const messages = [];
-            snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
-            const container = document.getElementById('chatMessages');
-            container.innerHTML = messages.map(m => `
-                <div class="chat-msg">
-                    <strong>${m.userName}</strong> (${new Date(m.timestamp).toLocaleString()})<br>
-                    ${m.message}
-                    <br><button class="reply-btn" onclick="replyToChat('${m.userId}', '${m.userName}')">Reply</button>
-                </div>
-            `).join('');
-        });
-        
-        // Load CV Requests
-        database.ref('cv_requests').orderByChild('timestamp').on('value', (snapshot) => {
-            const requests = [];
-            snapshot.forEach(child => requests.push(child.val()));
-            const container = document.getElementById('cvRequestsList');
-            container.innerHTML = requests.map(r => `
-                <div class="chat-msg">
-                    <strong>${r.name}</strong> (${r.email})<br>
-                    Phone: ${r.phone}<br>
-                    Skills: ${r.skills}<br>
-                    <small>${new Date(r.timestamp).toLocaleString()}</small>
-                </div>
-            `).join('');
-        });
     }
     
     function renderServices() {
         const container = document.getElementById('servicesList');
         container.innerHTML = services.map((s, i) => `
             <div class="exp-item">
-                <input type="text" value="${s.icon}" placeholder="Icon class" onchange="updateService(${i}, 'icon', this.value)">
-                <input type="text" value="${s.title}" placeholder="Title" onchange="updateService(${i}, 'title', this.value)">
-                <textarea placeholder="Description" onchange="updateService(${i}, 'desc', this.value)">${s.desc}</textarea>
+                <input type="text" value="${s.icon}" onchange="updateService(${i}, 'icon', this.value)">
+                <input type="text" value="${s.title}" onchange="updateService(${i}, 'title', this.value)">
+                <textarea onchange="updateService(${i}, 'desc', this.value)">${s.desc}</textarea>
                 <button onclick="removeService(${i})" style="background:#dc2626;">Remove</button>
             </div>
         `).join('');
@@ -231,10 +206,10 @@ function escapeHtml(text) {
         const container = document.getElementById('expList');
         container.innerHTML = experiences.map((exp, i) => `
             <div class="exp-item">
-                <input type="text" value="${exp.year}" placeholder="Year" onchange="updateExp(${i}, 'year', this.value)">
-                <input type="text" value="${exp.title}" placeholder="Title" onchange="updateExp(${i}, 'title', this.value)">
-                <input type="text" value="${exp.company}" placeholder="Company" onchange="updateExp(${i}, 'company', this.value)">
-                <textarea placeholder="Description" onchange="updateExp(${i}, 'desc', this.value)">${exp.desc}</textarea>
+                <input type="text" value="${exp.year}" onchange="updateExp(${i}, 'year', this.value)">
+                <input type="text" value="${exp.title}" onchange="updateExp(${i}, 'title', this.value)">
+                <input type="text" value="${exp.company}" onchange="updateExp(${i}, 'company', this.value)">
+                <textarea onchange="updateExp(${i}, 'desc', this.value)">${exp.desc}</textarea>
                 <button onclick="removeExp(${i})" style="background:#dc2626;">Remove</button>
             </div>
         `).join('');
@@ -244,39 +219,180 @@ function escapeHtml(text) {
         const container = document.getElementById('reviewsList');
         container.innerHTML = reviews.map((r, i) => `
             <div class="exp-item">
-                <input type="text" value="${r.name}" placeholder="Name" onchange="updateReview(${i}, 'name', this.value)">
-                <textarea placeholder="Review" onchange="updateReview(${i}, 'text', this.value)">${r.text}</textarea>
+                <input type="text" value="${r.name}" onchange="updateReview(${i}, 'name', this.value)">
+                <textarea onchange="updateReview(${i}, 'text', this.value)">${r.text}</textarea>
                 <button onclick="removeReview(${i})" style="background:#dc2626;">Remove</button>
             </div>
         `).join('');
     }
     
-    window.updateService = (i, field, val) => { services[i][field] = val; };
-    window.updateExp = (i, field, val) => { experiences[i][field] = val; };
-    window.updateReview = (i, field, val) => { reviews[i][field] = val; };
-    window.addService = () => { services.push({ icon: "fa-star", title: "New Service", desc: "Description" }); renderServices(); };
-    window.addExperience = () => { experiences.push({ year: "2024", title: "New Role", company: "Company", desc: "Description" }); renderExperiences(); };
-    window.addReview = () => { reviews.push({ name: "Client Name", text: "Review text" }); renderReviews(); };
+    window.updateService = (i, f, v) => { services[i][f] = v; };
+    window.updateExp = (i, f, v) => { experiences[i][f] = v; };
+    window.updateReview = (i, f, v) => { reviews[i][f] = v; };
+    window.addService = () => { services.push({ icon: "fa-star", title: "New Service", desc: "" }); renderServices(); };
+    window.addExperience = () => { experiences.push({ year: "2024", title: "New Role", company: "", desc: "" }); renderExperiences(); };
+    window.addReview = () => { reviews.push({ name: "Client", text: "" }); renderReviews(); };
     window.removeService = (i) => { services.splice(i,1); renderServices(); };
     window.removeExp = (i) => { experiences.splice(i,1); renderExperiences(); };
     window.removeReview = (i) => { reviews.splice(i,1); renderReviews(); };
     
-    window.replyToChat = (userId, userName) => {
-        const reply = prompt(`Reply to ${userName}:`);
-        if(reply && reply.trim()) {
-            database.ref('chats').push({
-                userId: userId,
-                userName: "Admin (Pradeep Kumar)",
-                message: reply,
-                timestamp: Date.now(),
-                read: false
+    // ========== WHATSAPP STYLE CHAT SYSTEM ==========
+    
+    // Load all clients (unique users who sent messages)
+    function loadClients() {
+        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
+            const clientsMap = new Map();
+            const messages = [];
+            
+            snapshot.forEach(child => {
+                const msg = child.val();
+                messages.push({ id: child.key, ...msg });
+                
+                if(msg.userId && msg.userId !== 'admin') {
+                    if(!clientsMap.has(msg.userId)) {
+                        clientsMap.set(msg.userId, {
+                            id: msg.userId,
+                            name: msg.userName || 'Unknown',
+                            email: msg.userEmail || '',
+                            lastMessage: msg.message,
+                            lastTime: msg.timestamp,
+                            unread: !msg.read && msg.userId !== 'admin'
+                        });
+                    } else {
+                        const existing = clientsMap.get(msg.userId);
+                        if(msg.timestamp > existing.lastTime) {
+                            existing.lastMessage = msg.message;
+                            existing.lastTime = msg.timestamp;
+                        }
+                        if(!msg.read && msg.userId !== 'admin') existing.unread++;
+                    }
+                }
             });
-            alert('✅ Reply sent successfully!');
-        }
+            
+            const clients = Array.from(clientsMap.values()).sort((a,b) => b.lastTime - a.lastTime);
+            
+            const clientsDiv = document.getElementById('clientsList');
+            if(clients.length === 0) {
+                clientsDiv.innerHTML = '<div style="padding: 20px; text-align: center; color: #888;">No clients yet</div>';
+                return;
+            }
+            
+            clientsDiv.innerHTML = clients.map(client => `
+                <div class="client-item" onclick="selectClient('${client.id}', '${escapeHtml(client.name)}')">
+                    <div class="client-name">
+                        ${escapeHtml(client.name)}
+                        ${client.unread > 0 ? `<span class="unread-badge">${client.unread}</span>` : ''}
+                    </div>
+                    <div class="client-last-msg">${escapeHtml(client.lastMessage.substring(0, 50))}</div>
+                    <div class="client-time">${new Date(client.lastTime).toLocaleString()}</div>
+                </div>
+            `).join('');
+        });
+    }
+    
+    // Select client and load their messages
+    window.selectClient = function(clientId, clientName) {
+        selectedClient = { id: clientId, name: clientName };
+        
+        document.getElementById('chatHeader').innerHTML = `<h3 style="color:#D4AF37;"><i class="fas fa-user-circle"></i> Chat with ${escapeHtml(clientName)}</h3>`;
+        document.getElementById('chatInputArea').style.display = 'flex';
+        
+        // Load messages for this client only
+        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
+            const clientMessages = [];
+            snapshot.forEach(child => {
+                const msg = child.val();
+                if(msg.userId === clientId || (msg.userId === 'admin' && msg.conversationId === clientId)) {
+                    clientMessages.push({ id: child.key, ...msg });
+                }
+            });
+            clientMessages.sort((a,b) => a.timestamp - b.timestamp);
+            allMessages = clientMessages;
+            
+            const messagesDiv = document.getElementById('chatMessagesList');
+            if(clientMessages.length === 0) {
+                messagesDiv.innerHTML = '<div style="text-align: center; padding: 50px; color: #888;">No messages yet. Send a reply!</div>';
+                return;
+            }
+            
+            messagesDiv.innerHTML = clientMessages.map(msg => `
+                <div class="message-bubble ${msg.userId === 'admin' ? 'admin' : 'user'}">
+                    <div class="bubble ${msg.userId === 'admin' ? 'admin' : 'user'}">
+                        ${escapeHtml(msg.message)}
+                        <span class="msg-time">${new Date(msg.timestamp).toLocaleString()} ${msg.read ? '✓✓' : '✓'}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Mark messages as read
+            clientMessages.forEach(msg => {
+                if(msg.userId !== 'admin' && !msg.read) {
+                    database.ref('chats/' + msg.id).update({ read: true, readAt: Date.now() });
+                }
+            });
+        });
     };
     
+    // Reply to client
+    function sendReply() {
+        if(!selectedClient) {
+            alert('Select a client first');
+            return;
+        }
+        
+        const input = document.getElementById('replyMessageInput');
+        const message = input.value.trim();
+        
+        if(!message) {
+            alert('Type a message');
+            return;
+        }
+        
+        database.ref('chats').push({
+            userId: 'admin',
+            userName: 'Pradeep Kumar (Admin)',
+            userEmail: 'pradeep.jat1996@gmail.com',
+            message: message,
+            timestamp: Date.now(),
+            read: true,
+            isAdmin: true,
+            conversationId: selectedClient.id
+        }).then(() => {
+            input.value = '';
+            // Update typing status
+            database.ref('typing_status/admin_' + selectedClient.id).set(false);
+        }).catch(err => {
+            console.error(err);
+            alert('Failed to send');
+        });
+    }
+    
+    // Load CV Requests
+    function loadCVRequests() {
+        database.ref('cv_requests').orderByChild('timestamp').on('value', (snapshot) => {
+            const requests = [];
+            snapshot.forEach(child => requests.push(child.val()));
+            const container = document.getElementById('cvRequestsList');
+            if(requests.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 20px;">No requests yet</div>';
+                return;
+            }
+            container.innerHTML = requests.map(r => `
+                <div style="background: #2a2a2a; padding: 12px; margin-bottom: 10px; border-radius: 10px;">
+                    <strong>${escapeHtml(r.name)}</strong> (${r.email})<br>
+                    Phone: ${r.phone || 'N/A'}<br>
+                    Skills: ${r.skills || 'N/A'}<br>
+                    <small>${new Date(r.timestamp).toLocaleString()}</small>
+                </div>
+            `).join('');
+        });
+    }
+    
+    // Save all changes
     document.getElementById('saveAllBtn').addEventListener('click', async () => {
-        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s);
+        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim());
         
         const data = {
             fullName: document.getElementById('fullName').value,
@@ -298,20 +414,35 @@ function escapeHtml(text) {
         };
         
         await database.ref('public_data').set(data);
-        document.getElementById('msg').innerHTML = '✅ All changes saved successfully! Real-time update on public website.';
-        setTimeout(() => document.getElementById('msg').innerHTML = '', 4000);
+        document.getElementById('msg').innerHTML = '✅ All changes saved! Real-time update on website.';
+        setTimeout(() => document.getElementById('msg').innerHTML = '', 3000);
     });
     
-    document.getElementById('previewBtn').addEventListener('click', () => {
-        window.open('/', '_blank');
-    });
-    
+    document.getElementById('previewBtn').addEventListener('click', () => window.open('/', '_blank'));
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.removeItem('admin_auth');
         window.location.href = '/';
     });
     
-    loadData();
+    document.getElementById('sendReplyBtn').addEventListener('click', sendReply);
+    document.getElementById('replyMessageInput').addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') sendReply();
+    });
+    
+    function escapeHtml(text) {
+        if(!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Initialize
+    loadProfileData();
+    loadClients();
+    loadCVRequests();
 </script>
 </body>
 </html>
