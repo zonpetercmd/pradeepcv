@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <style>
         :root {
             --primary: #0a0a0a;
@@ -40,7 +41,6 @@
             transition: var(--transition);
         }
 
-        /* Theme Toggle */
         .theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -63,7 +63,6 @@
             transform: scale(1.1);
         }
 
-        /* Navigation */
         .navbar {
             background: var(--white);
             box-shadow: 0 2px 20px rgba(0,0,0,0.05);
@@ -109,7 +108,6 @@
             color: var(--gold);
         }
 
-        /* Hero Section */
         .hero {
             background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
             padding: 60px 5%;
@@ -170,14 +168,12 @@
             color: var(--gold);
         }
 
-        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 50px 5%;
         }
 
-        /* Section Title */
         .section-title {
             text-align: center;
             font-size: 2rem;
@@ -189,7 +185,6 @@
             color: var(--gold);
         }
 
-        /* About Section */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -249,7 +244,6 @@
             color: var(--gold);
         }
 
-        /* Services Section */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -281,7 +275,6 @@
             margin-bottom: 10px;
         }
 
-        /* Skills */
         .skills-container {
             display: flex;
             flex-wrap: wrap;
@@ -298,7 +291,6 @@
             font-size: 0.9rem;
         }
 
-        /* Experience Timeline */
         .timeline {
             position: relative;
             max-width: 800px;
@@ -319,7 +311,6 @@
             margin-bottom: 8px;
         }
 
-        /* Reviews */
         .reviews-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -349,7 +340,6 @@
             color: var(--gold);
         }
 
-        /* Contact & Chat */
         .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -398,6 +388,7 @@
 
         .chat-message {
             margin-bottom: 15px;
+            position: relative;
         }
 
         .user-msg {
@@ -406,6 +397,21 @@
 
         .admin-msg {
             text-align: left;
+        }
+
+        .delete-msg {
+            position: absolute;
+            bottom: 0;
+            right: -20px;
+            font-size: 10px;
+            color: #dc2626;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .chat-message:hover .delete-msg {
+            opacity: 1;
         }
 
         .chat-input-area {
@@ -463,7 +469,6 @@
             display: none;
         }
 
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -526,12 +531,10 @@
 </head>
 <body>
 
-<!-- Theme Toggle -->
 <button class="theme-toggle" id="themeToggle">
     <i class="fas fa-sun"></i>
 </button>
 
-<!-- Navigation -->
 <nav class="navbar">
     <div class="nav-container">
         <div class="logo">
@@ -550,7 +553,6 @@
     </div>
 </nav>
 
-<!-- Hero Section -->
 <section class="hero" id="home">
     <div class="hero-content">
         <h1>Pradeep Kumar</h1>
@@ -563,7 +565,6 @@
     </div>
 </section>
 
-<!-- About Section -->
 <section class="container" id="about">
     <h2 class="section-title">About <span>Me</span></h2>
     <div class="about-grid">
@@ -582,31 +583,26 @@
     </div>
 </section>
 
-<!-- Services Section -->
 <section class="container" id="services">
     <h2 class="section-title">My <span>Services</span></h2>
     <div class="services-grid" id="servicesGrid"></div>
 </section>
 
-<!-- Experience Section -->
 <section class="container" id="experience">
     <h2 class="section-title">Work <span>Experience</span></h2>
     <div class="timeline" id="timeline"></div>
 </section>
 
-<!-- Skills Section -->
 <section class="container" id="skills">
     <h2 class="section-title">My <span>Skills</span></h2>
     <div class="skills-container" id="skillsContainer"></div>
 </section>
 
-<!-- Reviews Section -->
 <section class="container" id="reviews">
     <h2 class="section-title">Client <span>Reviews</span></h2>
     <div class="reviews-grid" id="reviewsGrid"></div>
 </section>
 
-<!-- Contact & Chat Section -->
 <section class="container" id="contact">
     <h2 class="section-title">Contact <span>Me</span></h2>
     <div class="contact-grid">
@@ -618,7 +614,6 @@
             <div class="contact-item"><i class="fab fa-linkedin"></i> <a href="#" id="linkedinContactLink" target="_blank">Connect on LinkedIn</a></div>
         </div>
         
-        <!-- Chat Box -->
         <div class="chat-box">
             <h3>💬 Live Chat with Pradeep</h3>
             
@@ -652,7 +647,6 @@
     </div>
 </section>
 
-<!-- Create CV Modal -->
 <div class="modal" id="createCvModal">
     <div class="modal-content">
         <h2>✨ Create Your Professional CV</h2>
@@ -674,7 +668,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
 <script>
-    // Firebase Config
     const firebaseConfig = {
         authDomain: "pradeep-cv-1299a.firebaseapp.com",
         databaseURL: "https://pradeep-cv-1299a-default-rtdb.asia-southeast1.firebasedatabase.app/",
@@ -687,6 +680,8 @@
     
     let currentUser = null;
     let typingTimeout = null;
+    let lastMessageTime = 0;
+    let messagesListener = null;
     
     // Theme Toggle
     let darkMode = false;
@@ -704,7 +699,6 @@
         });
     }
     
-    // Escape HTML
     function escapeHtml(text) {
         if(!text) return '';
         return text.replace(/[&<>]/g, function(m) {
@@ -715,13 +709,16 @@
         });
     }
     
-    // Format message
     function formatMessage(text) {
         if(!text) return '';
         return escapeHtml(text).replace(/\n/g, '<br>');
     }
     
-    // ========== LOAD PUBLIC DATA ==========
+    function generateSessionId() {
+        return 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 16);
+    }
+    
+    // Load Public Data
     function loadPublicData() {
         database.ref('public_data').on('value', (snapshot) => {
             const data = snapshot.val() || {};
@@ -756,7 +753,6 @@
                 if(stat3) stat3.innerText = data.stats.success || '100%';
             }
             
-            // Services
             const services = data.services || [
                 { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions including Tally, GST, TDS" },
                 { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting, compliance, documentation" },
@@ -774,7 +770,6 @@
                 `).join('');
             }
             
-            // Experience
             const experiences = data.experiences || [
                 { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS, and legal notice drafting." }
             ];
@@ -790,14 +785,12 @@
                 `).join('');
             }
             
-            // Skills
             const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel', 'Income Tax', 'Company Law', 'Bank Reconciliation'];
             const skillsContainer = document.getElementById('skillsContainer');
             if(skillsContainer) {
                 skillsContainer.innerHTML = skills.map(s => `<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
             }
             
-            // Reviews
             const reviews = data.reviews || [
                 { name: "Radheshyam Saini", text: "Very nice behavior and complete accounting solution" },
                 { name: "Neha Gupta", text: "Excellent GST filing service. Highly professional!" }
@@ -815,25 +808,24 @@
         });
     }
     
-    // ========== CHAT SYSTEM ==========
-    
+    // Secure Chat System
     function checkExistingUser() {
-        const savedUser = localStorage.getItem('chat_user');
-        if(savedUser) {
+        const savedSession = localStorage.getItem('secure_chat_session');
+        if(savedSession) {
             try {
-                currentUser = JSON.parse(savedUser);
-                database.ref('chat_users/' + currentUser.id).once('value', (snapshot) => {
+                const sessionData = JSON.parse(atob(savedSession));
+                database.ref('chat_users/' + sessionData.id).once('value', (snapshot) => {
                     if(snapshot.exists()) {
+                        currentUser = { id: sessionData.id, name: snapshot.val().name, sessionToken: sessionData.token };
                         showChatInterface();
-                        loadUserMessages();
+                        loadSecureMessages();
                         setupTyping();
                     } else {
-                        localStorage.removeItem('chat_user');
-                        currentUser = null;
+                        localStorage.removeItem('secure_chat_session');
                     }
                 });
             } catch(e) {
-                localStorage.removeItem('chat_user');
+                localStorage.removeItem('secure_chat_session');
             }
         }
     }
@@ -851,23 +843,22 @@
             return;
         }
         
-        const userId = 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-        const userData = {
-            id: userId,
-            name: name,
-            email: email,
-            registeredAt: Date.now(),
-            lastActive: Date.now()
-        };
+        const userId = 'user_' + CryptoJS.SHA256(name + email + Date.now()).toString().substr(0, 20);
+        const sessionToken = generateSessionId();
         
-        database.ref('chat_users/' + userId).set(userData).then(() => {
-            currentUser = userData;
-            localStorage.setItem('chat_user', JSON.stringify(userData));
+        database.ref('chat_users/' + userId).set({
+            name: name,
+            email: btoa(email),
+            registeredAt: Date.now(),
+            sessionHash: CryptoJS.SHA256(sessionToken).toString()
+        }).then(() => {
+            currentUser = { id: userId, name: name, sessionToken: sessionToken };
+            const encryptedSession = btoa(JSON.stringify({ id: userId, token: sessionToken }));
+            localStorage.setItem('secure_chat_session', encryptedSession);
             
             database.ref('chats').push({
                 userId: userId,
                 userName: name,
-                userEmail: email,
                 message: `👋 Hello! I'm ${name}. I need your professional services.`,
                 timestamp: Date.now(),
                 read: false,
@@ -876,7 +867,7 @@
             });
             
             showChatInterface();
-            loadUserMessages();
+            loadSecureMessages();
             setupTyping();
             
             document.getElementById('chatName').value = '';
@@ -897,38 +888,31 @@
         if(userNameSpan && currentUser) userNameSpan.innerText = currentUser.name;
     }
     
-    function loadUserMessages() {
+    function loadSecureMessages() {
         if(!currentUser) return;
         
-        const messagesRef = database.ref('chats').orderByChild('timestamp').limitToLast(100);
+        if(messagesListener) messagesListener.off();
         
-        messagesRef.on('value', (snapshot) => {
-            const allMessages = [];
-            snapshot.forEach(child => {
-                const msg = child.val();
-                allMessages.push({ id: child.key, ...msg });
-            });
-            
-            // Filter: only current user's messages and admin replies to this user
-            const userMessages = allMessages.filter(msg => 
-                msg.userId === currentUser.id || 
-                (msg.userId === 'admin' && (msg.conversationId === currentUser.id || msg.userEmail === currentUser.email))
-            );
-            
-            userMessages.sort((a, b) => a.timestamp - b.timestamp);
+        const query = database.ref('chats').orderByChild('conversationId').equalTo(currentUser.id).limitToLast(100);
+        
+        messagesListener = query.on('value', (snapshot) => {
+            const messages = [];
+            snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
+            messages.sort((a, b) => a.timestamp - b.timestamp);
             
             const messagesDiv = document.getElementById('messagesList');
             if(!messagesDiv) return;
             
-            if(userMessages.length === 0) {
+            if(messages.length === 0) {
                 messagesDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 30px;">✨ Start a conversation! Send a message below.</div>';
                 return;
             }
             
-            messagesDiv.innerHTML = userMessages.map(msg => {
+            messagesDiv.innerHTML = messages.map(msg => {
                 const isUser = msg.userId === currentUser.id;
+                const canDelete = isUser && (Date.now() - msg.timestamp < 3600000);
                 return `
-                    <div class="chat-message ${isUser ? 'user-msg' : 'admin-msg'}">
+                    <div class="chat-message ${isUser ? 'user-msg' : 'admin-msg'}" data-msg-id="${msg.id}">
                         <div style="display: inline-block; max-width: 80%; ${isUser ? 'background: #D4AF37; color: #0a0a0a;' : 'background: #1a1a1a; color: #D4AF37;'} padding: 10px 15px; border-radius: 18px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
                             <div style="font-size: 11px; opacity: 0.7; margin-bottom: 4px;">
                                 ${isUser ? 'You' : 'Pradeep Kumar (Admin)'}
@@ -939,20 +923,31 @@
                                 ${msg.read ? ' ✓✓' : ' ✓'}
                             </div>
                         </div>
+                        ${canDelete ? `<i class="fas fa-trash-alt delete-msg" onclick="deleteMessage('${msg.id}')" style="font-size: 10px; color: #dc2626; cursor: pointer; margin-left: 5px;"></i>` : ''}
                     </div>
                 `;
             }).join('');
             
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
-            // Mark messages as read
-            userMessages.forEach(msg => {
+            messages.forEach(msg => {
                 if(msg.userId !== currentUser.id && !msg.read) {
                     database.ref('chats/' + msg.id).update({ read: true, readAt: Date.now() });
                 }
             });
         });
     }
+    
+    window.deleteMessage = function(messageId) {
+        if(confirm('Delete this message?')) {
+            database.ref('chats/' + messageId).remove().then(() => {
+                database.ref('deleted_messages/' + messageId).set({
+                    deletedAt: Date.now(),
+                    deletedBy: currentUser.id
+                });
+            }).catch(err => console.error(err));
+        }
+    };
     
     function setupTyping() {
         if(!currentUser) return;
@@ -985,6 +980,12 @@
             return;
         }
         
+        const now = Date.now();
+        if(now - lastMessageTime < 2000) {
+            alert('Please wait 2 seconds between messages');
+            return;
+        }
+        
         const input = document.getElementById('chatMessageInput');
         const message = input.value.trim();
         
@@ -993,18 +994,28 @@
             return;
         }
         
+        if(message.length > 500) {
+            alert('Message too long (max 500 characters)');
+            return;
+        }
+        
+        const sensitivePattern = /password|otp|credit|card|aadhar|pan|upi|bank|account number/i;
+        const cleanMessage = sensitivePattern.test(message) ? '[REDACTED - Sensitive info removed]' : message;
+        
+        lastMessageTime = now;
+        
         const sendBtn = document.getElementById('sendMsgBtn');
         if(sendBtn) sendBtn.disabled = true;
         
         database.ref('chats').push({
             userId: currentUser.id,
             userName: currentUser.name,
-            userEmail: currentUser.email,
-            message: message,
-            timestamp: Date.now(),
+            message: cleanMessage.substring(0, 500),
+            timestamp: now,
             read: false,
             isAdmin: false,
-            conversationId: currentUser.id
+            conversationId: currentUser.id,
+            ipHash: CryptoJS.SHA256(generateSessionId()).toString().substr(0, 10)
         }).then(() => {
             input.value = '';
             database.ref('typing_status/' + currentUser.id).set(false);
@@ -1018,13 +1029,11 @@
     
     window.logoutUser = function() {
         if(currentUser) {
-            database.ref('typing_status/' + currentUser.id).set(false);
+            database.ref('typing_status/' + currentUser.id).set(null);
         }
+        if(messagesListener) messagesListener.off();
         currentUser = null;
-        localStorage.removeItem('chat_user');
-        
-        database.ref('chats').off();
-        database.ref('typing_status').off();
+        localStorage.removeItem('secure_chat_session');
         
         const loginDiv = document.getElementById('chatLogin');
         const chatDiv = document.getElementById('chatArea');
@@ -1063,7 +1072,6 @@
         });
     }
     
-    // Modal functions
     window.submitCvRequest = function() {
         const name = document.getElementById('cvName')?.value;
         const email = document.getElementById('cvEmail')?.value;
@@ -1091,7 +1099,6 @@
         if(modal) modal.style.display = 'none';
     };
     
-    // Tab switching
     function initTabs() {
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -1105,14 +1112,12 @@
         });
     }
     
-    // Enter key to send
     document.addEventListener('keypress', function(e) {
-        if(e.key === 'Enter' && document.getElementById('chatMessageInput') === document.activeElement) {
+        if(e.key === 'Enter' && document.getElementById('chatMessageInput') === document.activeElement && currentUser) {
             sendUserMessage();
         }
     });
     
-    // Show create CV modal on scroll
     let modalShown = false;
     window.addEventListener('scroll', () => {
         if(!modalShown && window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
@@ -1123,12 +1128,10 @@
         }
     });
     
-    // Initialize
     loadPublicData();
     checkExistingUser();
     setTimeout(initTabs, 500);
     
-    // Views counter
     const viewsRef = database.ref('cv_views');
     viewsRef.on('value', (snapshot) => {
         const viewSpan = document.getElementById('viewCount');
@@ -1139,6 +1142,7 @@
     window.registerUser = registerUser;
     window.sendUserMessage = sendUserMessage;
     window.logoutUser = logoutUser;
+    window.deleteMessage = deleteMessage;
 </script>
 </body>
 </html>
