@@ -1,6 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pradeep Kumar | Accountant & Legal Expert | Professional Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #1a1a1a;
+            --gold: #D4AF37;
+            --gold-light: #F5E6A3;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary: #ffffff;
+            --secondary: #f0f0f0;
+            --white: #1a1a1a;
+            --gray: #2a2a2a;
+            --dark-gray: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: var(--transition);
+            border: none;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 15px 5%;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo h2 {
+            color: var(--gold);
+            font-size: 1.5rem;
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            color: var(--dark-gray);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--gold);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--gold);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 5%;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--primary);
+        }
+
+        .section-title span {
+            color: var(--gold);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-img {
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 0 auto;
+            background: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid var(--gold);
+        }
+
+        .about-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .about-img i {
+            font-size: 80px;
+            color: var(--gold);
+        }
+
+        .about-text h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .about-text p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat h4 {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .service-card {
+            background: var(--gray);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .service-card i {
+            font-size: 40px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: var(--gold);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            background: var(--gray);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .timeline-year {
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        /* Reviews */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .review-card {
+            background: var(--gray);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .review-card i {
+            color: var(--gold);
+            font-size: 25px;
+            margin-bottom: 12px;
+        }
+
+        .review-card p {
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .reviewer {
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        /* Contact & Chat */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contact-info {
+            background: var(--gray);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item i {
+            width: 35px;
+            height: 35px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .chat-box {
+            background: var(--gray);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .chat-messages {
+            height: 320px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: var(--white);
+            border-radius: 15px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+        }
+
+        .user-msg {
+            text-align: right;
+        }
+
+        .admin-msg {
+            text-align: left;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .chat-input-area button {
+            padding: 12px 20px;
+            background: var(--gold);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .login-area {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .login-area input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid var(--gold);
+            border-radius: 25px;
+            background: var(--white);
+        }
+
+        .login-area button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: var(--gold);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .typing-indicator {
+            font-size: 11px;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: none;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid var(--gold);
+            border-radius: 10px;
+        }
+
+        footer {
+            background: var(--primary);
+            color: var(--gold);
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                margin-top: 12px;
+                justify-content: center;
+            }
+            .hero-content h1 {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: 1.5rem;
+            }
+            .theme-toggle {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Theme Toggle -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-sun"></i>
+</button>
+
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h2>PRADEEP <span style="color:var(--gold);">KUMAR</span></h2>
+            <p>Accountant & Legal Expert</p>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Pradeep Kumar</h1>
+        <p>Accountant | Compliance Expert | Legal Support | 7+ Years Experience</p>
+        <div class="btn-group">
+            <a href="#contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Hire Me</a>
+            <button class="btn btn-secondary" id="downloadCvBtn"><i class="fas fa-download"></i> Download CV</button>
+            <a href="#" id="linkedinBtn" target="_blank" class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="container" id="about">
+    <h2 class="section-title">About <span>Me</span></h2>
+    <div class="about-grid">
+        <div class="about-img" id="aboutImg">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="about-text">
+            <h3 id="aboutName">Pradeep Kumar</h3>
+            <p id="aboutDesc">Experienced Accountant and Legal Expert with 7+ years of expertise in financial management, GST compliance, TDS filing, and legal documentation.</p>
+            <div class="stats">
+                <div class="stat"><h4 id="stat1">7+</h4><p>Years Exp</p></div>
+                <div class="stat"><h4 id="stat2">500+</h4><p>Clients</p></div>
+                <div class="stat"><h4 id="stat3">100%</h4><p>Success</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="container" id="services">
+    <h2 class="section-title">My <span>Services</span></h2>
+    <div class="services-grid" id="servicesGrid"></div>
+</section>
+
+<!-- Experience Section -->
+<section class="container" id="experience">
+    <h2 class="section-title">Work <span>Experience</span></h2>
+    <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- Skills Section -->
+<section class="container" id="skills">
+    <h2 class="section-title">My <span>Skills</span></h2>
+    <div class="skills-container" id="skillsContainer"></div>
+</section>
+
+<!-- Reviews Section -->
+<section class="container" id="reviews">
+    <h2 class="section-title">Client <span>Reviews</span></h2>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+</section>
+
+<!-- Contact & Chat Section -->
+<section class="container" id="contact">
+    <h2 class="section-title">Contact <span>Me</span></h2>
+    <div class="contact-grid">
+        <div class="contact-info">
+            <h3>Get In Touch</h3>
+            <div class="contact-item"><i class="fas fa-phone"></i> <span id="contactPhone">8955152133 | 8502000060</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i> <span id="contactEmail">pradeep.jat1996@gmail.com</span></div>
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="contactLocation">Sikar, Rajasthan</span></div>
+            <div class="contact-item"><i class="fab fa-linkedin"></i> <a href="#" id="linkedinContactLink" target="_blank">Connect on LinkedIn</a></div>
+        </div>
+        
+        <!-- Chat Box -->
+        <div class="chat-box">
+            <h3>💬 Live Chat with Pradeep</h3>
+            
+            <div id="chatLogin" class="login-area">
+                <p style="margin-bottom: 10px;">Create account to start chatting</p>
+                <input type="text" id="chatName" placeholder="Your Full Name">
+                <input type="email" id="chatEmail" placeholder="Your Email">
+                <button onclick="registerUser()"><i class="fas fa-user-plus"></i> Create Account & Join Chat</button>
+            </div>
+            
+            <div id="chatArea" style="display:none;">
+                <div style="background: var(--gold); padding: 8px 12px; border-radius: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fas fa-user-circle"></i> Logged in as: <strong id="chatUserName"></strong></span>
+                    <button onclick="logoutUser()" style="background:#dc2626; color:white; border:none; padding:5px 12px; border-radius:20px; cursor:pointer;">Logout</button>
+                </div>
+                
+                <div class="chat-messages" id="messagesList">
+                    <div style="text-align:center; padding:30px; color:#888;">Loading messages...</div>
+                </div>
+                
+                <div class="typing-indicator" id="adminTyping">
+                    <i class="fas fa-ellipsis-h"></i> Admin is typing...
+                </div>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="chatMessageInput" placeholder="Type your message...">
+                    <button id="sendMsgBtn" onclick="sendUserMessage()"><i class="fas fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Create CV Modal -->
+<div class="modal" id="createCvModal">
+    <div class="modal-content">
+        <h2>✨ Create Your Professional CV</h2>
+        <p>Fill details to get a professional CV template!</p>
+        <input type="text" id="cvName" placeholder="Full Name">
+        <input type="email" id="cvEmail" placeholder="Email">
+        <input type="text" id="cvPhone" placeholder="Phone">
+        <textarea id="cvSkills" placeholder="Your Skills (comma separated)"></textarea>
+        <button onclick="submitCvRequest()" style="background:var(--gold); padding:12px; border:none; border-radius:25px; cursor:pointer; width:100%;">Submit Request</button>
+        <button onclick="closeModal()" style="margin-top:10px; padding:10px; border:none; border-radius:25px; cursor:pointer; width:100%;">Close</button>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Pradeep Kumar | Professional Accountant & Legal Expert | All Rights Reserved</p>
+</footer>
+
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
     // Firebase Config
@@ -31,6 +702,23 @@
                 themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
             }
         });
+    }
+    
+    // Escape HTML
+    function escapeHtml(text) {
+        if(!text) return '';
+        return text.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+    
+    // Format message
+    function formatMessage(text) {
+        if(!text) return '';
+        return escapeHtml(text).replace(/\n/g, '<br>');
     }
     
     // ========== LOAD PUBLIC DATA ==========
@@ -127,15 +815,13 @@
         });
     }
     
-    // ========== CHAT SYSTEM - USER SIDE ==========
+    // ========== CHAT SYSTEM ==========
     
-    // Check if user already logged in
     function checkExistingUser() {
         const savedUser = localStorage.getItem('chat_user');
         if(savedUser) {
             try {
                 currentUser = JSON.parse(savedUser);
-                // Verify user exists in Firebase
                 database.ref('chat_users/' + currentUser.id).once('value', (snapshot) => {
                     if(snapshot.exists()) {
                         showChatInterface();
@@ -152,7 +838,6 @@
         }
     }
     
-    // Register new user
     window.registerUser = function() {
         const name = document.getElementById('chatName').value.trim();
         const email = document.getElementById('chatEmail').value.trim();
@@ -179,7 +864,6 @@
             currentUser = userData;
             localStorage.setItem('chat_user', JSON.stringify(userData));
             
-            // Send welcome message
             database.ref('chats').push({
                 userId: userId,
                 userName: name,
@@ -203,7 +887,6 @@
         });
     };
     
-    // Show chat interface after login
     function showChatInterface() {
         const loginDiv = document.getElementById('chatLogin');
         const chatDiv = document.getElementById('chatArea');
@@ -214,7 +897,6 @@
         if(userNameSpan && currentUser) userNameSpan.innerText = currentUser.name;
     }
     
-    // Load only CURRENT USER's messages (not others)
     function loadUserMessages() {
         if(!currentUser) return;
         
@@ -227,35 +909,27 @@
                 allMessages.push({ id: child.key, ...msg });
             });
             
-            // FILTER: Sirf current user ke messages dikhao
+            // Filter: only current user's messages and admin replies to this user
             const userMessages = allMessages.filter(msg => 
                 msg.userId === currentUser.id || 
-                (msg.userId === 'admin' && msg.conversationId === currentUser.id)
+                (msg.userId === 'admin' && (msg.conversationId === currentUser.id || msg.userEmail === currentUser.email))
             );
             
-            // Also include messages where conversationId matches
-            const relevantMessages = allMessages.filter(msg => 
-                msg.userId === currentUser.id || 
-                msg.conversationId === currentUser.id ||
-                (msg.userId === 'admin' && msg.userEmail === currentUser.email)
-            );
-            
-            const finalMessages = [...new Map([...userMessages, ...relevantMessages].map(m => [m.id, m])).values()];
-            finalMessages.sort((a, b) => a.timestamp - b.timestamp);
+            userMessages.sort((a, b) => a.timestamp - b.timestamp);
             
             const messagesDiv = document.getElementById('messagesList');
             if(!messagesDiv) return;
             
-            if(finalMessages.length === 0) {
+            if(userMessages.length === 0) {
                 messagesDiv.innerHTML = '<div style="text-align: center; color: #999; padding: 30px;">✨ Start a conversation! Send a message below.</div>';
                 return;
             }
             
-            messagesDiv.innerHTML = finalMessages.map(msg => {
+            messagesDiv.innerHTML = userMessages.map(msg => {
                 const isUser = msg.userId === currentUser.id;
                 return `
-                    <div class="chat-message ${isUser ? 'user-msg' : 'admin-msg'}" style="margin-bottom: 15px; display: flex; justify-content: ${isUser ? 'flex-end' : 'flex-start'};">
-                        <div style="max-width: 80%; ${isUser ? 'background: #D4AF37; color: #0a0a0a;' : 'background: #1a1a1a; color: #D4AF37;'} padding: 12px 16px; border-radius: 18px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
+                    <div class="chat-message ${isUser ? 'user-msg' : 'admin-msg'}">
+                        <div style="display: inline-block; max-width: 80%; ${isUser ? 'background: #D4AF37; color: #0a0a0a;' : 'background: #1a1a1a; color: #D4AF37;'} padding: 10px 15px; border-radius: 18px; ${isUser ? 'border-bottom-right-radius: 5px;' : 'border-bottom-left-radius: 5px;'}">
                             <div style="font-size: 11px; opacity: 0.7; margin-bottom: 4px;">
                                 ${isUser ? 'You' : 'Pradeep Kumar (Admin)'}
                             </div>
@@ -269,11 +943,10 @@
                 `;
             }).join('');
             
-            // Scroll to bottom
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
             // Mark messages as read
-            finalMessages.forEach(msg => {
+            userMessages.forEach(msg => {
                 if(msg.userId !== currentUser.id && !msg.read) {
                     database.ref('chats/' + msg.id).update({ read: true, readAt: Date.now() });
                 }
@@ -281,50 +954,31 @@
         });
     }
     
-    // Format message (support emoji and line breaks)
-    function formatMessage(text) {
-        if(!text) return '';
-        return text
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/\n/g, '<br>')
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/__(.*?)__/g, '<em>$1</em>');
-    }
-    
-    // Setup typing indicator
     function setupTyping() {
         if(!currentUser) return;
         
-        const typingRef = database.ref('typing_status/' + currentUser.id);
         const adminTypingRef = database.ref('typing_status/admin_' + currentUser.id);
         
         adminTypingRef.on('value', (snapshot) => {
             const isTyping = snapshot.val();
             const indicator = document.getElementById('adminTyping');
             if(indicator) {
-                if(isTyping) {
-                    indicator.style.display = 'block';
-                } else {
-                    indicator.style.display = 'none';
-                }
+                indicator.style.display = isTyping ? 'block' : 'none';
             }
         });
         
         const input = document.getElementById('chatMessageInput');
         if(input) {
             input.addEventListener('input', () => {
-                typingRef.set(true);
+                database.ref('typing_status/' + currentUser.id).set(true);
                 if(typingTimeout) clearTimeout(typingTimeout);
                 typingTimeout = setTimeout(() => {
-                    typingRef.set(false);
+                    database.ref('typing_status/' + currentUser.id).set(false);
                 }, 1000);
             });
         }
     }
     
-    // Send message
     window.sendUserMessage = function() {
         if(!currentUser) {
             alert('Please login first');
@@ -362,7 +1016,6 @@
         });
     };
     
-    // Logout
     window.logoutUser = function() {
         if(currentUser) {
             database.ref('typing_status/' + currentUser.id).set(false);
@@ -459,16 +1112,16 @@
         }
     });
     
-    // Escape HTML helper
-    function escapeHtml(text) {
-        if(!text) return '';
-        return text.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
-    }
+    // Show create CV modal on scroll
+    let modalShown = false;
+    window.addEventListener('scroll', () => {
+        if(!modalShown && window.innerHeight + window.scrollY >= document.body.offsetHeight - 800) {
+            setTimeout(() => {
+                document.getElementById('createCvModal').style.display = 'flex';
+                modalShown = true;
+            }, 2000);
+        }
+    });
     
     // Initialize
     loadPublicData();
@@ -483,8 +1136,9 @@
     });
     viewsRef.transaction(v => (v || 0) + 1);
     
-    // Make functions global
     window.registerUser = registerUser;
     window.sendUserMessage = sendUserMessage;
     window.logoutUser = logoutUser;
 </script>
+</body>
+</html>
