@@ -143,6 +143,20 @@
             font-size: 12px;
         }
 
+        /* Live Counter Styling */
+        .views-counter {
+            background: rgba(255, 255, 255, 0.15);
+            color: #eab308;
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            backdrop-filter: blur(5px);
+        }
+
         @media (max-width: 700px) {
             .header h1 { font-size: 32px; }
         }
@@ -150,6 +164,11 @@
 </head>
 <body>
 <div class="container">
+    <div style="text-align: center;">
+        <!-- Live Views Count Yahan Dikhega -->
+        <div class="views-counter">📊 Total CV Views: <span id="viewCount">Connecting...</span></div>
+    </div>
+
     <div class="header">
         <h1>📁 PRADEEP KUMAR</h1>
         <p>Accountant | Compliance Expert | Legal Support</p>
@@ -170,7 +189,7 @@
             <p>✉️ pradeep.jat1996@gmail.com</p>
             <p>📍 Sikar, Rajasthan</p>
             <p>🎂 27 Feb 1996</p>
-            <button onclick="window.location.href='mailto:pradeep.jat1996@gmail.com'">📧 Send Email</button>
+            <button id="emailBtn">📧 Send Email</button>
         </div>
 
         <div class="card">
@@ -224,10 +243,57 @@
     </footer>
 </div>
 
+<!-- Firebase Core aur Database Libraries (CDN) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database.compat.js"></script>
+
 <script>
+    // Tumhare project details ke hisab se configured Firebase Config
+    const firebaseConfig = {
+        authDomain: "pradeep-cv-1299a.firebaseapp.com",
+        databaseURL: "https://pradeep-cv-1299a-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        projectId: "pradeep-cv-1299a",
+        storageBucket: "pradeep-cv-1299a.appspot.com"
+    };
+
+    // Firebase ko initialize kiya
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // 1. LIVE VIEWS COUNTER
+    const viewsRef = database.ref('cv_views');
+    
+    // Database se data screen par dikhane ke liye
+    viewsRef.on('value', (snapshot) => {
+        const currentViews = snapshot.val() || 0;
+        document.getElementById('viewCount').innerText = currentViews;
+    });
+
+    // Har naye user ke aane par count +1 karne ke liye
+    viewsRef.transaction((currentValue) => {
+        return (currentValue || 0) + 1;
+    });
+
+    // 2. ACTIVITY LOGS FUNCTION
+    function logActivity(actionName) {
+        const logsRef = database.ref('clicks_and_shares').push();
+        logsRef.set({
+            action: actionName,
+            time: new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})
+        });
+    }
+
+    // Copy Link functionality + Firebase tracker
     document.getElementById('copyBtn').addEventListener('click', function() {
         navigator.clipboard.writeText(window.location.href);
         alert('✅ Link copied! ' + window.location.href);
+        logActivity('Link Copied');
+    });
+
+    // Email functionality + Firebase tracker
+    document.getElementById('emailBtn').addEventListener('click', function() {
+        window.location.href = 'mailto:pradeep.jat1996@gmail.com';
+        logActivity('Clicked Email Button');
     });
 </script>
 </body>
