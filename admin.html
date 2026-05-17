@@ -10,13 +10,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; }
-        .header { background: #D4AF37; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+        .header { background: #D4AF37; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
         .card { background: #1a1a1a; border-radius: 15px; padding: 25px; margin-bottom: 25px; }
         .card h2 { color: #D4AF37; margin-bottom: 20px; }
         input, textarea { width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 10px; border: none; background: #2a2a2a; color: white; }
-        button { background: #D4AF37; color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-right: 10px; }
+        button { background: #D4AF37; color: #0a0a0a; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-right: 10px; margin-top: 5px; }
         .exp-item, .review-item { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .chat-msg { background: #2a2a2a; padding: 12px; border-radius: 10px; margin-bottom: 10px; }
+        .reply-btn { background: #D4AF37; padding: 5px 12px; font-size: 12px; margin-top: 8px; }
         @media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -35,18 +37,23 @@
     <div class="card">
         <h2>Profile & Basic Info</h2>
         <input type="text" id="fullName" placeholder="Full Name">
-        <input type="text" id="about" placeholder="About Me">
+        <textarea id="about" placeholder="About Me" rows="3"></textarea>
         <input type="text" id="photoUrl" placeholder="Photo URL (Upload to imgbb or any hosting)">
         <input type="text" id="phone" placeholder="Phone">
         <input type="email" id="email" placeholder="Email">
         <input type="text" id="location" placeholder="Location">
         <input type="url" id="linkedin" placeholder="LinkedIn URL">
+        <div class="grid-2col">
+            <input type="text" id="statExp" placeholder="Stats - Experience (e.g., 7+)">
+            <input type="text" id="statClients" placeholder="Stats - Clients (e.g., 500+)">
+            <input type="text" id="statSuccess" placeholder="Stats - Success (e.g., 100%)">
+        </div>
     </div>
     
     <div class="grid-2col">
         <div class="card">
             <h2>Skills (comma separated)</h2>
-            <input type="text" id="skills" placeholder="Tally, GST, TDS, Legal Drafting">
+            <textarea id="skills" placeholder="Tally Prime, GST Filing, TDS Compliance, PF & ESIC, Legal Drafting, MS Excel Advanced, MIS Reporting, Income Tax, Company Law, Contract Drafting, Bank Reconciliation, Auditing" rows="4"></textarea>
         </div>
         <div class="card">
             <h2>Services</h2>
@@ -69,12 +76,18 @@
     </div>
     
     <div class="card">
-        <h2>Chat Messages <i class="fas fa-comments"></i></h2>
+        <h2>Chat Messages <i class="fas fa-comments"></i> & User Replies</h2>
         <div id="chatMessages" style="max-height:400px; overflow-y:auto;"></div>
     </div>
     
     <div class="card">
+        <h2>CV Requests</h2>
+        <div id="cvRequestsList" style="max-height:300px; overflow-y:auto;"></div>
+    </div>
+    
+    <div class="card">
         <button id="saveAllBtn"><i class="fas fa-save"></i> Save All Changes</button>
+        <button id="previewBtn">Preview Changes</button>
     </div>
 </div>
 
@@ -117,6 +130,9 @@
             document.getElementById('email').value = data.email || '';
             document.getElementById('location').value = data.location || '';
             document.getElementById('linkedin').value = data.linkedin || '';
+            document.getElementById('statExp').value = (data.stats && data.stats.exp) || '7+';
+            document.getElementById('statClients').value = (data.stats && data.stats.clients) || '500+';
+            document.getElementById('statSuccess').value = (data.stats && data.stats.success) || '100%';
             document.getElementById('skills').value = (data.skills || []).join(', ');
             
             services = data.services || [
@@ -137,10 +153,25 @@
             snapshot.forEach(child => messages.push({ id: child.key, ...child.val() }));
             const container = document.getElementById('chatMessages');
             container.innerHTML = messages.map(m => `
-                <div style="background:#2a2a2a; padding:10px; margin-bottom:10px; border-radius:10px;">
+                <div class="chat-msg">
                     <strong>${m.userName}</strong> (${new Date(m.timestamp).toLocaleString()})<br>
                     ${m.message}
-                    <button onclick="replyToChat('${m.userId}', '${m.userName}')" style="margin-top:5px; padding:5px 10px;">Reply</button>
+                    <br><button class="reply-btn" onclick="replyToChat('${m.userId}', '${m.userName}')">Reply</button>
+                </div>
+            `).join('');
+        });
+        
+        // Load CV Requests
+        database.ref('cv_requests').orderByChild('timestamp').on('value', (snapshot) => {
+            const requests = [];
+            snapshot.forEach(child => requests.push(child.val()));
+            const container = document.getElementById('cvRequestsList');
+            container.innerHTML = requests.map(r => `
+                <div class="chat-msg">
+                    <strong>${r.name}</strong> (${r.email})<br>
+                    Phone: ${r.phone}<br>
+                    Skills: ${r.skills}<br>
+                    <small>${new Date(r.timestamp).toLocaleString()}</small>
                 </div>
             `).join('');
         });
@@ -152,7 +183,7 @@
             <div class="exp-item">
                 <input type="text" value="${s.icon}" placeholder="Icon class" onchange="updateService(${i}, 'icon', this.value)">
                 <input type="text" value="${s.title}" placeholder="Title" onchange="updateService(${i}, 'title', this.value)">
-                <input type="text" value="${s.desc}" placeholder="Description" onchange="updateService(${i}, 'desc', this.value)">
+                <textarea placeholder="Description" onchange="updateService(${i}, 'desc', this.value)">${s.desc}</textarea>
                 <button onclick="removeService(${i})" style="background:#dc2626;">Remove</button>
             </div>
         `).join('');
@@ -182,7 +213,7 @@
         `).join('');
     }
     
-    window.updateService = (i, field, val) => { services[i][field] = val; renderServices(); };
+    window.updateService = (i, field, val) => { services[i][field] = val; };
     window.updateExp = (i, field, val) => { experiences[i][field] = val; };
     window.updateReview = (i, field, val) => { reviews[i][field] = val; };
     window.addService = () => { services.push({ icon: "fa-star", title: "New Service", desc: "Description" }); renderServices(); };
@@ -191,22 +222,23 @@
     window.removeService = (i) => { services.splice(i,1); renderServices(); };
     window.removeExp = (i) => { experiences.splice(i,1); renderExperiences(); };
     window.removeReview = (i) => { reviews.splice(i,1); renderReviews(); };
+    
     window.replyToChat = (userId, userName) => {
         const reply = prompt(`Reply to ${userName}:`);
-        if(reply) {
+        if(reply && reply.trim()) {
             database.ref('chats').push({
                 userId: userId,
-                userName: "Admin (Pradeep)",
+                userName: "Admin (Pradeep Kumar)",
                 message: reply,
                 timestamp: Date.now(),
                 read: false
             });
-            alert('Reply sent!');
+            alert('✅ Reply sent successfully!');
         }
     };
     
     document.getElementById('saveAllBtn').addEventListener('click', async () => {
-        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim());
+        const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim()).filter(s => s);
         
         const data = {
             fullName: document.getElementById('fullName').value,
@@ -216,6 +248,11 @@
             email: document.getElementById('email').value,
             location: document.getElementById('location').value,
             linkedin: document.getElementById('linkedin').value,
+            stats: {
+                exp: document.getElementById('statExp').value,
+                clients: document.getElementById('statClients').value,
+                success: document.getElementById('statSuccess').value
+            },
             skills: skillsArray,
             services: services,
             experiences: experiences,
@@ -223,8 +260,12 @@
         };
         
         await database.ref('public_data').set(data);
-        document.getElementById('msg').innerHTML = '✅ All changes saved successfully!';
-        setTimeout(() => document.getElementById('msg').innerHTML = '', 3000);
+        document.getElementById('msg').innerHTML = '✅ All changes saved successfully! Real-time update on public website.';
+        setTimeout(() => document.getElementById('msg').innerHTML = '', 4000);
+    });
+    
+    document.getElementById('previewBtn').addEventListener('click', () => {
+        window.open('/', '_blank');
     });
     
     document.getElementById('logoutBtn').addEventListener('click', () => {
