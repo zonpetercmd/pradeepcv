@@ -6,6 +6,7 @@
     <title>Admin Panel | Pradeep Kumar</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: #0a0a0a; padding: 20px; }
@@ -18,7 +19,6 @@
         .exp-item { background: #2a2a2a; padding: 15px; border-radius: 10px; margin-bottom: 15px; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        /* WhatsApp Style Chat */
         .chat-layout { display: grid; grid-template-columns: 350px 1fr; gap: 20px; min-height: 600px; }
         .clients-list { background: #1a1a1a; border-radius: 15px; overflow-y: auto; max-height: 600px; }
         .client-item { padding: 15px; border-bottom: 1px solid #333; cursor: pointer; transition: all 0.3s; }
@@ -34,13 +34,15 @@
         .chat-messages { flex: 1; padding: 20px; overflow-y: auto; height: 450px; }
         .chat-input-area { padding: 15px; border-top: 1px solid #333; display: flex; gap: 10px; }
         .chat-input-area input { flex: 1; margin: 0; background: #2a2a2a; }
-        .message-bubble { margin-bottom: 15px; display: flex; }
+        .message-bubble { margin-bottom: 15px; display: flex; position: relative; }
         .message-bubble.admin { justify-content: flex-end; }
         .message-bubble.user { justify-content: flex-start; }
         .bubble { max-width: 70%; padding: 10px 15px; border-radius: 18px; }
         .bubble.admin { background: #D4AF37; color: #0a0a0a; border-bottom-right-radius: 5px; }
         .bubble.user { background: #2a2a2a; color: white; border-bottom-left-radius: 5px; }
         .msg-time { font-size: 10px; opacity: 0.6; margin-top: 5px; display: block; }
+        .delete-msg-btn { position: absolute; top: 0; right: -25px; font-size: 12px; color: #dc2626; cursor: pointer; opacity: 0; transition: opacity 0.3s; }
+        .message-bubble:hover .delete-msg-btn { opacity: 1; }
         
         @media (max-width: 768px) { .chat-layout { grid-template-columns: 1fr; } .clients-list { max-height: 300px; } }
     </style>
@@ -98,16 +100,13 @@
         </div>
     </div>
     
-    <!-- WhatsApp Style Chat Section -->
     <div class="card">
         <h2><i class="fas fa-comments"></i> Client Chats (WhatsApp Style)</h2>
         <div class="chat-layout">
-            <!-- Clients List -->
             <div class="clients-list" id="clientsList">
                 <div style="padding: 20px; text-align: center; color: #888;">Loading clients...</div>
             </div>
             
-            <!-- Chat Window -->
             <div class="chat-window">
                 <div class="chat-header" id="chatHeader">
                     <h3 style="color:#D4AF37;">Select a client to start chatting</h3>
@@ -149,9 +148,7 @@
     const database = firebase.database();
     
     let selectedClient = null;
-    let allMessages = [];
     
-    // Admin Auth
     if(!localStorage.getItem('admin_auth')) {
         const pwd = prompt('Enter Admin Password:');
         if(pwd === 'admin123') {
@@ -164,7 +161,6 @@
     
     let services = [], experiences = [], reviews = [];
     
-    // Load Profile Data
     function loadProfileData() {
         database.ref('public_data').once('value', (snapshot) => {
             const data = snapshot.val() || {};
@@ -236,27 +232,21 @@
     window.removeExp = (i) => { experiences.splice(i,1); renderExperiences(); };
     window.removeReview = (i) => { reviews.splice(i,1); renderReviews(); };
     
-    // ========== WHATSAPP STYLE CHAT SYSTEM ==========
-    
-    // Load all clients (unique users who sent messages)
+    // Load Clients
     function loadClients() {
         database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
             const clientsMap = new Map();
-            const messages = [];
             
             snapshot.forEach(child => {
                 const msg = child.val();
-                messages.push({ id: child.key, ...msg });
-                
                 if(msg.userId && msg.userId !== 'admin') {
                     if(!clientsMap.has(msg.userId)) {
                         clientsMap.set(msg.userId, {
                             id: msg.userId,
                             name: msg.userName || 'Unknown',
-                            email: msg.userEmail || '',
                             lastMessage: msg.message,
                             lastTime: msg.timestamp,
-                            unread: !msg.read && msg.userId !== 'admin'
+                            unread: !msg.read && msg.userId !== 'admin' ? 1 : 0
                         });
                     } else {
                         const existing = clientsMap.get(msg.userId);
@@ -290,14 +280,12 @@
         });
     }
     
-    // Select client and load their messages
     window.selectClient = function(clientId, clientName) {
         selectedClient = { id: clientId, name: clientName };
         
         document.getElementById('chatHeader').innerHTML = `<h3 style="color:#D4AF37;"><i class="fas fa-user-circle"></i> Chat with ${escapeHtml(clientName)}</h3>`;
         document.getElementById('chatInputArea').style.display = 'flex';
         
-        // Load messages for this client only
         database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
             const clientMessages = [];
             snapshot.forEach(child => {
@@ -307,7 +295,6 @@
                 }
             });
             clientMessages.sort((a,b) => a.timestamp - b.timestamp);
-            allMessages = clientMessages;
             
             const messagesDiv = document.getElementById('chatMessagesList');
             if(clientMessages.length === 0) {
@@ -316,17 +303,17 @@
             }
             
             messagesDiv.innerHTML = clientMessages.map(msg => `
-                <div class="message-bubble ${msg.userId === 'admin' ? 'admin' : 'user'}">
+                <div class="message-bubble ${msg.userId === 'admin' ? 'admin' : 'user'}" data-msg-id="${msg.id}">
                     <div class="bubble ${msg.userId === 'admin' ? 'admin' : 'user'}">
                         ${escapeHtml(msg.message)}
                         <span class="msg-time">${new Date(msg.timestamp).toLocaleString()} ${msg.read ? '✓✓' : '✓'}</span>
                     </div>
+                    <i class="fas fa-trash-alt delete-msg-btn" onclick="deleteMessageAdmin('${msg.id}')" title="Delete message"></i>
                 </div>
             `).join('');
             
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
             
-            // Mark messages as read
             clientMessages.forEach(msg => {
                 if(msg.userId !== 'admin' && !msg.read) {
                     database.ref('chats/' + msg.id).update({ read: true, readAt: Date.now() });
@@ -335,7 +322,17 @@
         });
     };
     
-    // Reply to client
+    window.deleteMessageAdmin = function(messageId) {
+        if(confirm('Delete this message permanently?')) {
+            database.ref('chats/' + messageId).remove().then(() => {
+                database.ref('deleted_messages/' + messageId).set({
+                    deletedAt: Date.now(),
+                    deletedBy: 'admin'
+                });
+            }).catch(err => console.error(err));
+        }
+    };
+    
     function sendReply() {
         if(!selectedClient) {
             alert('Select a client first');
@@ -350,10 +347,11 @@
             return;
         }
         
+        database.ref('typing_status/admin_' + selectedClient.id).set(true);
+        
         database.ref('chats').push({
             userId: 'admin',
             userName: 'Pradeep Kumar (Admin)',
-            userEmail: 'pradeep.jat1996@gmail.com',
             message: message,
             timestamp: Date.now(),
             read: true,
@@ -361,15 +359,15 @@
             conversationId: selectedClient.id
         }).then(() => {
             input.value = '';
-            // Update typing status
-            database.ref('typing_status/admin_' + selectedClient.id).set(false);
+            setTimeout(() => {
+                database.ref('typing_status/admin_' + selectedClient.id).set(false);
+            }, 500);
         }).catch(err => {
             console.error(err);
             alert('Failed to send');
         });
     }
     
-    // Load CV Requests
     function loadCVRequests() {
         database.ref('cv_requests').orderByChild('timestamp').on('value', (snapshot) => {
             const requests = [];
@@ -390,7 +388,6 @@
         });
     }
     
-    // Save all changes
     document.getElementById('saveAllBtn').addEventListener('click', async () => {
         const skillsArray = document.getElementById('skills').value.split(',').map(s => s.trim());
         
@@ -439,7 +436,6 @@
         });
     }
     
-    // Initialize
     loadProfileData();
     loadClients();
     loadCVRequests();
