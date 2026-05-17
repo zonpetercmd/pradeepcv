@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pradeep Kumar | Professional Accountant & Legal Expert</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>Pradeep Kumar | Accountant & Legal Expert | Professional Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #1a1a1a;
+            --gold: #D4AF37;
+            --gold-light: #F5E6A3;
+            --white: #ffffff;
+            --gray: #f5f5f5;
+            --dark-gray: #333333;
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --primary: #ffffff;
+            --secondary: #f0f0f0;
+            --white: #1a1a1a;
+            --gray: #2a2a2a;
+            --dark-gray: #e0e0e0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,315 +34,432 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f2b3d 0%, #1a4a6f 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--primary);
+            transition: var(--transition);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        /* Admin Toggle Button */
-        .admin-toggle {
+        /* Theme Toggle */
+        .theme-toggle {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0f2b3d;
-            color: #eab308;
-            width: 50px;
-            height: 50px;
+            top: 20px;
+            right: 80px;
+            width: 45px;
+            height: 45px;
+            background: var(--gold);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1000;
-            font-size: 22px;
-            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: var(--transition);
         }
 
-        .admin-toggle:hover {
-            background: #eab308;
-            color: #0f2b3d;
+        .theme-toggle:hover {
             transform: scale(1.1);
         }
 
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-            background: #1e293b;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            color: white;
-            max-height: 80vh;
-            overflow-y: auto;
+        /* Admin Link Hidden */
+        .admin-hidden {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        .admin-panel.show {
-            display: block;
-            animation: slideDown 0.4s ease;
+        /* Navigation */
+        .navbar {
+            background: var(--white);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            padding: 15px 5%;
         }
 
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .admin-panel h3 {
-            color: #eab308;
-            margin-bottom: 20px;
-        }
-
-        .admin-panel input, .admin-panel textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 10px;
-            border: none;
-            font-family: inherit;
-        }
-
-        .admin-panel textarea {
-            min-height: 80px;
-        }
-
-        .admin-panel button {
-            background: #eab308;
-            color: #0f2b3d;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-right: 10px;
-        }
-
-        .exp-item, .edu-item, .gallery-item {
-            background: #334155;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-
-        /* Top Bar */
-        .top-bar {
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
         }
 
-        .views-counter, .like-counter {
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px);
-            padding: 10px 20px;
-            border-radius: 50px;
-            color: #eab308;
-            font-weight: 600;
-            cursor: pointer;
+        .logo h2 {
+            color: var(--gold);
+            font-size: 1.8rem;
         }
 
-        .print-btn, .create-cv-btn {
-            background: rgba(255,255,255,0.15);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
+        .logo p {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
         }
 
-        .create-cv-btn {
-            background: #eab308;
-            color: #0f2b3d;
-        }
-
-        /* Tabs */
-        .tabs {
+        .nav-links {
             display: flex;
+            gap: 30px;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 60px;
-            backdrop-filter: blur(10px);
         }
 
-        .tab-btn {
-            padding: 12px 28px;
-            border: none;
-            background: transparent;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 40px;
-            transition: all 0.3s;
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: var(--transition);
         }
 
-        .tab-btn.active {
-            background: #eab308;
-            color: #0f2b3d;
+        .nav-links a:hover {
+            color: var(--gold);
         }
 
-        /* Profile Header */
-        .profile-header {
-            background: white;
-            border-radius: 30px;
-            padding: 40px;
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+            padding: 80px 5%;
             text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 4px solid #eab308;
+        .hero-content h1 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            margin-bottom: 25px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--gold);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--gold);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 5%;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            color: var(--primary);
+        }
+
+        .section-title span {
+            color: var(--gold);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .about-img {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            border-radius: 20px;
             overflow: hidden;
-            background: linear-gradient(135deg, #0f2b3d, #1a4a6f);
+            margin: 0 auto;
+            background: var(--gray);
             display: flex;
             align-items: center;
             justify-content: center;
+            border: 3px solid var(--gold);
         }
 
-        .profile-img img {
+        .about-img img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .profile-img i {
-            font-size: 50px;
-            color: #eab308;
+        .about-img i {
+            font-size: 100px;
+            color: var(--gold);
         }
 
-        .profile-header h1 {
-            font-size: 2.5rem;
-            color: #0f2b3d;
-        }
-
-        .status-badge {
-            display: inline-block;
-            background: #dcfce7;
-            color: #15803d;
-            padding: 5px 15px;
-            border-radius: 30px;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-
-        .stat-card i {
-            font-size: 30px;
-            color: #eab308;
-        }
-
-        .stat-number {
-            font-size: 28px;
-            font-weight: 800;
-            color: #0f2b3d;
-        }
-
-        /* Content Cards */
-        .tab-content {
-            display: none;
-            background: white;
-            border-radius: 30px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-            color: #0f2b3d;
+        .about-text h3 {
+            font-size: 1.8rem;
             margin-bottom: 20px;
-            border-left: 4px solid #eab308;
-            padding-left: 15px;
         }
 
-        .gallery-grid {
+        .about-text p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+        }
+
+        .stats {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
-        .gallery-img {
-            width: 100%;
-            height: 180px;
+        .stat {
+            text-align: center;
+        }
+
+        .stat h4 {
+            font-size: 2rem;
+            color: var(--gold);
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--gray);
+            padding: 30px;
             border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
         }
 
-        .gallery-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .service-card i {
+            font-size: 50px;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
         }
 
         .skill-tag {
-            display: inline-block;
-            background: #f1f5f9;
-            padding: 8px 16px;
-            border-radius: 12px;
-            margin: 5px;
-            font-size: 13px;
+            background: var(--gold);
+            color: var(--primary);
+            padding: 10px 25px;
+            border-radius: 30px;
             font-weight: 600;
-            color: #0f2b3d;
+        }
+
+        /* Experience Timeline */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .timeline-item {
-            margin-bottom: 25px;
-            padding-left: 20px;
-            border-left: 2px solid #eab308;
+            padding: 20px;
+            background: var(--gray);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--gold);
         }
 
         .timeline-year {
-            font-weight: 800;
-            color: #eab308;
-            font-size: 14px;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 10px;
         }
 
-        .timeline-title {
+        /* Reviews */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .review-card {
+            background: var(--gray);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .review-card i {
+            color: var(--gold);
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .review-card p {
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .reviewer {
             font-weight: 700;
-            font-size: 18px;
-            color: #0f2b3d;
+            color: var(--gold);
+        }
+
+        /* Contact & Chat */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+
+        .contact-info {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item i {
+            width: 40px;
+            height: 40px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .chat-box {
+            background: var(--gray);
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        .messages {
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .message.user {
+            background: var(--gold);
+            color: var(--primary);
+            text-align: right;
+        }
+
+        .message.admin {
+            background: var(--primary);
+            color: var(--gold);
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .chat-input button {
+            padding: 12px 20px;
+            background: var(--gold);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Login for Chat */
+        .login-area {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .login-area input {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid var(--gold);
+            border-radius: 25px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: var(--gold);
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
         }
 
         /* Modal */
@@ -341,145 +477,159 @@
         }
 
         .modal-content {
-            background: white;
+            background: var(--white);
             padding: 30px;
             border-radius: 20px;
             max-width: 500px;
             width: 90%;
-            text-align: center;
         }
 
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-        }
-
-        .pdf-content {
-            padding: 30px;
-            background: white;
-        }
-
-        footer {
-            text-align: center;
-            color: rgba(255,255,255,0.5);
-            margin-top: 40px;
-            font-size: 12px;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .tabs { border-radius: 20px; justify-content: center; }
-            .tab-btn { padding: 8px 16px; font-size: 12px; }
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .nav-links {
+                margin-top: 15px;
+                justify-content: center;
+            }
+            .hero-content h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="views-counter">
-            <i class="fa-regular fa-eye"></i> Views: <span id="viewCount">0</span>
-        </div>
-        <div class="like-counter" id="likeBtn">
-            <i class="fa-regular fa-heart"></i> Likes: <span id="likeCount">0</span>
-        </div>
-        <button class="print-btn" id="pdfDownloadBtn">
-            <i class="fa-solid fa-download"></i> Download PDF
-        </button>
-        <button class="create-cv-btn" id="createCvBtn">
-            <i class="fa-solid fa-plus"></i> Create Your CV
-        </button>
-    </div>
-
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <h3><i class="fa-solid fa-lock"></i> Admin Control Panel</h3>
-        <div id="adminSaveMsg" style="color:#4ade80; margin-bottom:15px;"></div>
-        
-        <h4>Profile Photo</h4>
-        <input type="text" id="editPhotoUrl" placeholder="Photo URL (Upload to imgur or any hosting)">
-        
-        <h4>Basic Info</h4>
-        <input type="text" id="editName" placeholder="Full Name">
-        <input type="text" id="editDesignation" placeholder="Designation">
-        <input type="text" id="editStatus" placeholder="Status Badge">
-        <textarea id="editAbout" placeholder="About Me"></textarea>
-        
-        <h4>Contact Details</h4>
-        <input type="text" id="editPhone" placeholder="Phone">
-        <input type="email" id="editEmail" placeholder="Email">
-        <input type="text" id="editLocation" placeholder="Location">
-        <input type="text" id="editBirthday" placeholder="Birthday">
-        
-        <h4>Skills (comma separated)</h4>
-        <input type="text" id="editSkills" placeholder="Tally, GST, TDS, Legal Drafting">
-        
-        <h4>Experience</h4>
-        <div id="expAdminList"></div>
-        <button onclick="addExpField()">+ Add Experience</button>
-        
-        <h4>Education</h4>
-        <div id="eduAdminList"></div>
-        <button onclick="addEduField()">+ Add Education</button>
-        
-        <h4>Professional Gallery (Image URLs)</h4>
-        <div id="galleryAdminList"></div>
-        <button onclick="addGalleryField()">+ Add Gallery Image</button>
-        
-        <div style="margin-top: 20px;">
-            <button id="saveAllBtn"><i class="fa-regular fa-floppy-disk"></i> Save All Changes</button>
-            <button id="closeAdminBtn">Close Panel</button>
-            <button id="logoutAdminBtn">Logout</button>
-        </div>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="tab-about"><i class="fa-regular fa-user"></i> About</button>
-        <button class="tab-btn" data-tab="tab-experience"><i class="fa-regular fa-building"></i> Experience</button>
-        <button class="tab-btn" data-tab="tab-education"><i class="fa-regular fa-graduation-cap"></i> Education</button>
-        <button class="tab-btn" data-tab="tab-skills"><i class="fa-regular fa-code"></i> Skills</button>
-        <button class="tab-btn" data-tab="tab-gallery"><i class="fa-regular fa-images"></i> Gallery</button>
-        <button class="tab-btn" data-tab="tab-contact"><i class="fa-regular fa-address-card"></i> Contact</button>
-    </div>
-
-    <!-- Profile Header -->
-    <div class="profile-header" id="profileHeader">
-        <div class="profile-img" id="profileImg">
-            <i class="fa-regular fa-user"></i>
-        </div>
-        <h1 id="fullName">Pradeep Kumar</h1>
-        <p id="designation">Accountant & Legal Expert</p>
-        <span class="status-badge" id="statusBadge">7+ Years Experience | Immediate Joining</span>
-    </div>
-
-    <!-- Stats Grid -->
-    <div class="stats-grid" id="statsGrid"></div>
-
-    <!-- Tab Contents -->
-    <div id="tab-contents"></div>
-
-    <footer>
-        © 2026 Pradeep Kumar | Professional Digital CV | <i class="fa-regular fa-heart"></i> Thanks for visiting!
-    </footer>
+<!-- Theme Toggle -->
+<div class="theme-toggle" id="themeToggle">
+    <i class="fas fa-sun"></i>
 </div>
 
-<!-- Modal for Create CV -->
+<!-- Navigation -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">
+            <h2>PRADEEP <span style="color:var(--gold);">KUMAR</span></h2>
+            <p>Accountant & Legal Expert</p>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#experience">Experience</a>
+            <a href="#skills">Skills</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Pradeep Kumar</h1>
+        <p>Accountant | Compliance Expert | Legal Support | 7+ Years Experience</p>
+        <div class="btn-group">
+            <a href="#contact" class="btn btn-primary"><i class="fas fa-envelope"></i> Hire Me</a>
+            <button class="btn btn-secondary" id="downloadCvBtn"><i class="fas fa-download"></i> Download CV</button>
+            <a href="https://linkedin.com/in/pradeep-kumar" target="_blank" class="btn btn-secondary"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="container" id="about">
+    <h2 class="section-title">About <span>Me</span></h2>
+    <div class="about-grid">
+        <div class="about-img" id="aboutImg">
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="about-text">
+            <h3 id="aboutName">Pradeep Kumar</h3>
+            <p id="aboutDesc">Experienced Accountant and Legal Expert with 7+ years of expertise in financial management, GST compliance, TDS filing, and legal documentation. Dedicated to providing 100% accurate and timely services to clients.</p>
+            <div class="stats">
+                <div class="stat"><h4>7+</h4><p>Years Exp</p></div>
+                <div class="stat"><h4>500+</h4><p>Clients</p></div>
+                <div class="stat"><h4>100%</h4><p>Success</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="container" id="services">
+    <h2 class="section-title">My <span>Services</span></h2>
+    <div class="services-grid" id="servicesGrid"></div>
+</section>
+
+<!-- Experience Section -->
+<section class="container" id="experience">
+    <h2 class="section-title">Work <span>Experience</span></h2>
+    <div class="timeline" id="timeline"></div>
+</section>
+
+<!-- Skills Section -->
+<section class="container" id="skills">
+    <h2 class="section-title">My <span>Skills</span></h2>
+    <div class="skills-container" id="skillsContainer"></div>
+</section>
+
+<!-- Reviews Section -->
+<section class="container" id="reviews">
+    <h2 class="section-title">Client <span>Reviews</span></h2>
+    <div class="reviews-grid" id="reviewsGrid"></div>
+</section>
+
+<!-- Contact & Chat Section -->
+<section class="container" id="contact">
+    <h2 class="section-title">Contact <span>Me</span></h2>
+    <div class="contact-grid">
+        <div class="contact-info">
+            <h3>Get In Touch</h3>
+            <div class="contact-item"><i class="fas fa-phone"></i> <span id="contactPhone">8955152133 | 8502000060</span></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i> <span id="contactEmail">pradeep.jat1996@gmail.com</span></div>
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span id="contactLocation">Sikar, Rajasthan</span></div>
+            <div class="contact-item"><i class="fab fa-linkedin"></i> <a href="#" id="linkedinLink" target="_blank">Connect on LinkedIn</a></div>
+        </div>
+        <div class="chat-box">
+            <h3>Want to Connect?</h3>
+            <div id="chatLogin" class="login-area">
+                <input type="text" id="chatName" placeholder="Your Name">
+                <input type="email" id="chatEmail" placeholder="Your Email">
+                <button onclick="loginToChat()">Start Chat</button>
+            </div>
+            <div id="chatArea" style="display:none;">
+                <div class="messages" id="messagesDiv"></div>
+                <div class="chat-input">
+                    <input type="text" id="messageInput" placeholder="Type your message...">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Create CV Modal -->
 <div class="modal" id="createCvModal">
     <div class="modal-content">
         <h2>Create Your Professional CV</h2>
-        <p style="margin-bottom: 20px;">Fill details below. We'll email you the template!</p>
-        <input type="text" id="cvUserName" placeholder="Your Name">
-        <input type="email" id="cvUserEmail" placeholder="Your Email">
-        <input type="text" id="cvUserPhone" placeholder="Your Phone">
-        <textarea id="cvUserMessage" placeholder="Your skills/experience (optional)"></textarea>
-        <button id="submitCvRequest" style="background:#eab308; color:#0f2b3d;">Submit Request</button>
-        <button id="closeModal" style="background:#dc2626; color:white;">Close</button>
+        <p>Fill details below to get a professional CV template!</p>
+        <input type="text" id="cvName" placeholder="Full Name" style="width:100%; margin:10px 0; padding:10px;">
+        <input type="email" id="cvEmail" placeholder="Email" style="width:100%; margin:10px 0; padding:10px;">
+        <input type="text" id="cvPhone" placeholder="Phone" style="width:100%; margin:10px 0; padding:10px;">
+        <textarea id="cvSkills" placeholder="Your Skills (comma separated)" style="width:100%; margin:10px 0; padding:10px;"></textarea>
+        <button onclick="submitCvRequest()" style="background:var(--gold); padding:12px; border:none; border-radius:25px; cursor:pointer;">Submit Request</button>
+        <button onclick="closeModal()" style="margin-top:10px; padding:10px; border:none; border-radius:25px; cursor:pointer;">Close</button>
     </div>
 </div>
+
+<footer>
+    <p>© 2026 Pradeep Kumar | Professional Accountant & Legal Expert | All Rights Reserved</p>
+</footer>
+
+<!-- Hidden Admin Link -->
+<div class="admin-hidden">Admin Access: /admin</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
@@ -497,288 +647,198 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // Admin Session
-    let isAdmin = localStorage.getItem('cv_admin') === 'true';
-    let experiences = [];
-    let educations = [];
-    let galleryImages = [];
+    let currentUser = null;
     
-    // Toggle Admin Panel
-    document.getElementById('adminToggleBtn') || createAdminToggle();
-    
-    function createAdminToggle() {
-        const btn = document.createElement('div');
-        btn.className = 'admin-toggle';
-        btn.innerHTML = '<i class="fa-solid fa-user-lock"></i>';
-        btn.onclick = toggleAdmin;
-        document.body.appendChild(btn);
-    }
-    
-    function toggleAdmin() {
-        if (!isAdmin) {
-            const pwd = prompt('🔐 Enter Admin Password:');
-            if (pwd === 'admin123') {
-                localStorage.setItem('cv_admin', 'true');
-                isAdmin = true;
-                document.getElementById('adminPanel').classList.add('show');
-                loadAdminData();
-            } else {
-                alert('Wrong Password!');
-            }
+    // Theme Toggle
+    let darkMode = false;
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        darkMode = !darkMode;
+        if(darkMode) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-moon"></i>';
         } else {
-            document.getElementById('adminPanel').classList.toggle('show');
-            if (document.getElementById('adminPanel').classList.contains('show')) {
-                loadAdminData();
-            }
+            document.body.removeAttribute('data-theme');
+            document.getElementById('themeToggle').innerHTML = '<i class="fas fa-sun"></i>';
         }
-    }
-    
-    document.getElementById('closeAdminBtn').addEventListener('click', () => {
-        document.getElementById('adminPanel').classList.remove('show');
-    });
-    
-    document.getElementById('logoutAdminBtn').addEventListener('click', () => {
-        localStorage.removeItem('cv_admin');
-        isAdmin = false;
-        document.getElementById('adminPanel').classList.remove('show');
-        alert('Logged out from admin mode!');
-    });
-    
-    // Load admin data
-    function loadAdminData() {
-        database.ref('cv_data').once('value', (snapshot) => {
-            const data = snapshot.val() || {};
-            document.getElementById('editPhotoUrl').value = data.photoUrl || '';
-            document.getElementById('editName').value = data.fullName || '';
-            document.getElementById('editDesignation').value = data.designation || '';
-            document.getElementById('editStatus').value = data.statusBadge || '';
-            document.getElementById('editAbout').value = data.about || '';
-            document.getElementById('editPhone').value = data.phone || '';
-            document.getElementById('editEmail').value = data.email || '';
-            document.getElementById('editLocation').value = data.location || '';
-            document.getElementById('editBirthday').value = data.birthday || '';
-            document.getElementById('editSkills').value = (data.skills || []).join(', ');
-            
-            experiences = data.experiences || [];
-            educations = data.educations || [];
-            galleryImages = data.galleryImages || [];
-            
-            renderAdminExp();
-            renderAdminEdu();
-            renderAdminGallery();
-        });
-    }
-    
-    function renderAdminExp() {
-        const container = document.getElementById('expAdminList');
-        container.innerHTML = experiences.map((exp, i) => `
-            <div class="exp-item">
-                <input type="text" placeholder="Year" value="${exp.year}" onchange="updateExp(${i}, 'year', this.value)">
-                <input type="text" placeholder="Title" value="${exp.title}" onchange="updateExp(${i}, 'title', this.value)">
-                <input type="text" placeholder="Company" value="${exp.company}" onchange="updateExp(${i}, 'company', this.value)">
-                <textarea placeholder="Description" onchange="updateExp(${i}, 'desc', this.value)">${exp.desc}</textarea>
-                <button onclick="removeExp(${i})" style="background:#dc2626;">Remove</button>
-            </div>
-        `).join('');
-    }
-    
-    function renderAdminEdu() {
-        const container = document.getElementById('eduAdminList');
-        container.innerHTML = educations.map((edu, i) => `
-            <div class="edu-item">
-                <input type="text" placeholder="Year" value="${edu.year}" onchange="updateEdu(${i}, 'year', this.value)">
-                <input type="text" placeholder="Title" value="${edu.title}" onchange="updateEdu(${i}, 'title', this.value)">
-                <input type="text" placeholder="Percentage/Grade" value="${edu.percent}" onchange="updateEdu(${i}, 'percent', this.value)">
-                <button onclick="removeEdu(${i})" style="background:#dc2626;">Remove</button>
-            </div>
-        `).join('');
-    }
-    
-    function renderAdminGallery() {
-        const container = document.getElementById('galleryAdminList');
-        container.innerHTML = galleryImages.map((img, i) => `
-            <div class="gallery-item">
-                <input type="text" placeholder="Image URL" value="${img}" onchange="updateGallery(${i}, this.value)">
-                <button onclick="removeGallery(${i})" style="background:#dc2626;">Remove</button>
-            </div>
-        `).join('');
-    }
-    
-    window.updateExp = (i, field, val) => { experiences[i][field] = val; };
-    window.updateEdu = (i, field, val) => { educations[i][field] = val; };
-    window.updateGallery = (i, val) => { galleryImages[i] = val; renderAdminGallery(); };
-    window.addExpField = () => { experiences.push({ year: '2024', title: 'New Position', company: 'Company', desc: 'Description' }); renderAdminExp(); };
-    window.addEduField = () => { educations.push({ year: '2024', title: 'New Degree', percent: 'Pending' }); renderAdminEdu(); };
-    window.addGalleryField = () => { galleryImages.push('https://via.placeholder.com/300'); renderAdminGallery(); };
-    window.removeExp = (i) => { experiences.splice(i,1); renderAdminExp(); };
-    window.removeEdu = (i) => { educations.splice(i,1); renderAdminEdu(); };
-    window.removeGallery = (i) => { galleryImages.splice(i,1); renderAdminGallery(); };
-    
-    // Save all data
-    document.getElementById('saveAllBtn').addEventListener('click', async () => {
-        const skillsArray = document.getElementById('editSkills').value.split(',').map(s => s.trim());
-        
-        const data = {
-            photoUrl: document.getElementById('editPhotoUrl').value,
-            fullName: document.getElementById('editName').value,
-            designation: document.getElementById('editDesignation').value,
-            statusBadge: document.getElementById('editStatus').value,
-            about: document.getElementById('editAbout').value,
-            phone: document.getElementById('editPhone').value,
-            email: document.getElementById('editEmail').value,
-            location: document.getElementById('editLocation').value,
-            birthday: document.getElementById('editBirthday').value,
-            skills: skillsArray,
-            experiences: experiences,
-            educations: educations,
-            galleryImages: galleryImages
-        };
-        
-        await database.ref('cv_data').set(data);
-        document.getElementById('adminSaveMsg').innerHTML = '✅ Saved successfully!';
-        setTimeout(() => { document.getElementById('adminSaveMsg').innerHTML = ''; loadPublicData(); }, 1000);
     });
     
     // Load Public Data
     function loadPublicData() {
-        database.ref('cv_data').on('value', (snapshot) => {
+        database.ref('public_data').on('value', (snapshot) => {
             const data = snapshot.val() || {};
             
-            // Update photo
-            const profileImgDiv = document.getElementById('profileImg');
-            if (data.photoUrl) {
-                profileImgDiv.innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
-            } else {
-                profileImgDiv.innerHTML = '<i class="fa-regular fa-user"></i>';
+            // About
+            document.getElementById('aboutName').innerText = data.fullName || 'Pradeep Kumar';
+            document.getElementById('aboutDesc').innerText = data.about || 'Experienced Accountant and Legal Expert...';
+            
+            // Contact
+            document.getElementById('contactPhone').innerText = data.phone || '8955152133 | 8502000060';
+            document.getElementById('contactEmail').innerText = data.email || 'pradeep.jat1996@gmail.com';
+            document.getElementById('contactLocation').innerText = data.location || 'Sikar, Rajasthan';
+            
+            // LinkedIn
+            if(data.linkedin) document.getElementById('linkedinLink').href = data.linkedin;
+            
+            // Photo
+            if(data.photoUrl) {
+                document.getElementById('aboutImg').innerHTML = `<img src="${data.photoUrl}" alt="Profile">`;
             }
             
-            document.getElementById('fullName').innerText = data.fullName || 'Pradeep Kumar';
-            document.getElementById('designation').innerText = data.designation || 'Accountant & Legal Expert';
-            document.getElementById('statusBadge').innerHTML = data.statusBadge || '7+ Years Experience | Immediate Joining';
-            
-            // Stats
-            const stats = [
-                { icon: "briefcase", value: "7+ Years", label: "Experience" },
-                { icon: "scale-balanced", value: "LLB", label: "Legal Expert" },
-                { icon: "money-bill-transfer", value: "500+", label: "BRS / Month" },
-                { icon: "shield-halved", value: "100%", label: "Compliance" }
+            // Services
+            const services = data.services || [
+                { icon: "fa-chart-line", title: "Accounting", desc: "Complete accounting solutions including Tally, GST, TDS" },
+                { icon: "fa-gavel", title: "Legal Services", desc: "Legal notice drafting, compliance, documentation" },
+                { icon: "fa-file-invoice", title: "Taxation", desc: "GST filing, Income Tax, TDS returns" },
+                { icon: "fa-briefcase", title: "Business Consulting", desc: "Financial planning and business advisory" }
             ];
-            
-            document.getElementById('statsGrid').innerHTML = stats.map(stat => `
-                <div class="stat-card">
-                    <i class="fa-solid fa-${stat.icon}"></i>
-                    <div class="stat-number">${stat.value}</div>
-                    <div>${stat.label}</div>
+            document.getElementById('servicesGrid').innerHTML = services.map(s => `
+                <div class="service-card">
+                    <i class="fas ${s.icon}"></i>
+                    <h3>${s.title}</h3>
+                    <p>${s.desc}</p>
                 </div>
             `).join('');
             
-            buildPublicTabs(data);
+            // Experience
+            const experiences = data.experiences || [
+                { year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS, and legal notice drafting." }
+            ];
+            document.getElementById('timeline').innerHTML = experiences.map(exp => `
+                <div class="timeline-item">
+                    <div class="timeline-year">${exp.year}</div>
+                    <h3>${exp.title}</h3>
+                    <p><strong>${exp.company}</strong></p>
+                    <p>${exp.desc}</p>
+                </div>
+            `).join('');
+            
+            // Skills
+            const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel'];
+            document.getElementById('skillsContainer').innerHTML = skills.map(s => `<span class="skill-tag">${s}</span>`).join('');
+            
+            // Reviews
+            const reviews = data.reviews || [
+                { name: "Rajesh Sharma", text: "Excellent accounting services! Very professional and timely." },
+                { name: "Neha Gupta", text: "Pradeep helped me with GST filing. Highly recommend!" }
+            ];
+            document.getElementById('reviewsGrid').innerHTML = reviews.map(r => `
+                <div class="review-card">
+                    <i class="fas fa-quote-left"></i>
+                    <p>${r.text}</p>
+                    <p class="reviewer">- ${r.name}</p>
+                </div>
+            `).join('');
         });
     }
     
-    function buildPublicTabs(data) {
-        const skills = data.skills || ['Tally Prime', 'GST Filing', 'TDS Compliance', 'PF & ESIC', 'Legal Drafting', 'MS Excel'];
-        const experiences = data.experiences || [{ year: "2021-2026", title: "Senior Accountant & Legal Executive", company: "Matrix Education, Sikar", desc: "Managed Tally Prime, GST, TDS, and legal notice drafting." }];
-        const educations = data.educations || [{ year: "2021-2023", title: "M.Com", percent: "59.67%" }, { year: "2017-2020", title: "LLB", percent: "54.5%" }, { year: "2013-2016", title: "B.Com", percent: "Completed" }];
-        const galleryImages = data.galleryImages || [];
-        
-        const tabsHtml = `
-            <div class="tab-content" id="tab-about">
-                <h2 class="section-title"><i class="fa-regular fa-user"></i> About Me</h2>
-                <p style="line-height:1.8;">${data.about || 'Experienced Accountant and Legal Expert with 7+ years of expertise in financial management, compliance, and legal documentation.'}</p>
-            </div>
-            
-            <div class="tab-content" id="tab-experience">
-                <h2 class="section-title"><i class="fa-regular fa-building"></i> Work Experience</h2>
-                ${experiences.map(exp => `<div class="timeline-item"><div class="timeline-year">${exp.year}</div><div class="timeline-title">${exp.title}</div><div style="color:#64748b;">${exp.company}</div><p>${exp.desc}</p></div>`).join('')}
-            </div>
-            
-            <div class="tab-content" id="tab-education">
-                <h2 class="section-title"><i class="fa-regular fa-graduation-cap"></i> Education</h2>
-                ${educations.map(edu => `<div class="timeline-item"><div class="timeline-year">${edu.year}</div><div class="timeline-title">${edu.title}</div><div>${edu.percent}</div></div>`).join('')}
-            </div>
-            
-            <div class="tab-content" id="tab-skills">
-                <h2 class="section-title"><i class="fa-regular fa-code"></i> Skills</h2>
-                <div>${skills.map(s => `<span class="skill-tag">${s}</span>`).join('')}</div>
-            </div>
-            
-            <div class="tab-content" id="tab-gallery">
-                <h2 class="section-title"><i class="fa-regular fa-images"></i> Professional Gallery</h2>
-                <div class="gallery-grid">${galleryImages.map(img => `<div class="gallery-img"><img src="${img}" alt="Gallery"></div>`).join('')}</div>
-                ${galleryImages.length === 0 ? '<p style="text-align:center; color:#64748b;">No images uploaded yet.</p>' : ''}
-            </div>
-            
-            <div class="tab-content" id="tab-contact">
-                <h2 class="section-title"><i class="fa-regular fa-address-card"></i> Contact Information</h2>
-                <div class="info-row"><div class="info-label">📞 Phone:</div><div>${data.phone || '8955152133 | 8502000060'}</div></div>
-                <div class="info-row"><div class="info-label">✉️ Email:</div><div>${data.email || 'pradeep.jat1996@gmail.com'}</div></div>
-                <div class="info-row"><div class="info-label">📍 Location:</div><div>${data.location || 'Sikar, Rajasthan'}</div></div>
-                <div class="info-row"><div class="info-label">🎂 Birthday:</div><div>${data.birthday || '27 Feb 1996'}</div></div>
-            </div>
-        `;
-        
-        document.getElementById('tab-contents').innerHTML = tabsHtml;
-        
-        // Activate first tab
-        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        if(document.getElementById('tab-about')) document.getElementById('tab-about').classList.add('active');
+    // Chat Functions
+    function loginToChat() {
+        const name = document.getElementById('chatName').value;
+        const email = document.getElementById('chatEmail').value;
+        if(name && email) {
+            currentUser = { name, email, id: Date.now().toString() };
+            localStorage.setItem('chatUser', JSON.stringify(currentUser));
+            document.getElementById('chatLogin').style.display = 'none';
+            document.getElementById('chatArea').style.display = 'block';
+            loadMessages();
+        } else {
+            alert('Please enter name and email');
+        }
     }
     
-    // Views & Likes Counter
-    const viewsRef = database.ref('cv_views');
-    viewsRef.on('value', (snapshot) => { document.getElementById('viewCount').innerText = snapshot.val() || 0; });
-    viewsRef.transaction(v => (v || 0) + 1);
+    function loadMessages() {
+        const userId = currentUser.id;
+        database.ref('chats').orderByChild('timestamp').on('value', (snapshot) => {
+            const messages = [];
+            snapshot.forEach(child => messages.push(child.val()));
+            const messagesDiv = document.getElementById('messagesDiv');
+            messagesDiv.innerHTML = messages.map(m => `
+                <div class="message ${m.userId === userId ? 'user' : 'admin'}">
+                    <strong>${m.userName}:</strong> ${m.message}
+                    <small style="display:block; font-size:10px;">${new Date(m.timestamp).toLocaleString()}</small>
+                </div>
+            `).join('');
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        });
+    }
     
-    const likesRef = database.ref('cv_likes');
-    likesRef.on('value', (snapshot) => { document.getElementById('likeCount').innerText = snapshot.val() || 0; });
-    document.getElementById('likeBtn').addEventListener('click', () => { likesRef.transaction(v => (v || 0) + 1); alert('Thanks for liking! ❤️'); });
+    function sendMessage() {
+        const input = document.getElementById('messageInput');
+        if(input.value.trim()) {
+            database.ref('chats').push({
+                userId: currentUser.id,
+                userName: currentUser.name,
+                message: input.value,
+                timestamp: Date.now(),
+                read: false
+            });
+            input.value = '';
+        }
+    }
     
-    // PDF Download
-    document.getElementById('pdfDownloadBtn').addEventListener('click', () => {
-        const element = document.getElementById('tab-contents').cloneNode(true);
-        const pdfContent = `<div class="pdf-content"><h1>${document.getElementById('fullName').innerText}</h1><p>${document.getElementById('designation').innerText}</p><hr>${element.innerHTML}</div>`;
-        const opt = { margin: 1, filename: `${document.getElementById('fullName').innerText}_CV.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
-        html2pdf().set(opt).from(pdfContent).save();
+    // Check saved chat user
+    const savedUser = localStorage.getItem('chatUser');
+    if(savedUser) {
+        currentUser = JSON.parse(savedUser);
+        document.getElementById('chatLogin').style.display = 'none';
+        document.getElementById('chatArea').style.display = 'block';
+        loadMessages();
+    }
+    
+    // Download CV PDF
+    document.getElementById('downloadCvBtn').addEventListener('click', () => {
+        const element = document.createElement('div');
+        element.innerHTML = `
+            <div style="padding:40px; font-family:Inter;">
+                <h1>${document.getElementById('aboutName').innerText}</h1>
+                <p>Accountant & Legal Expert</p>
+                <hr>
+                <h3>About</h3>
+                <p>${document.getElementById('aboutDesc').innerText}</p>
+                <h3>Skills</h3>
+                <div>${document.getElementById('skillsContainer').innerHTML}</div>
+                <h3>Experience</h3>
+                <div>${document.getElementById('timeline').innerHTML}</div>
+                <h3>Contact</h3>
+                <p>${document.getElementById('contactPhone').innerText}</p>
+                <p>${document.getElementById('contactEmail').innerText}</p>
+            </div>
+        `;
+        const opt = { margin: 1, filename: `${document.getElementById('aboutName').innerText}_CV.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+        html2pdf().set(opt).from(element).save();
     });
     
     // Create CV Modal
-    const modal = document.getElementById('createCvModal');
-    document.getElementById('createCvBtn').onclick = () => modal.style.display = 'flex';
-    document.getElementById('closeModal').onclick = () => modal.style.display = 'none';
-    document.getElementById('submitCvRequest').onclick = () => {
-        const cvRequest = {
-            name: document.getElementById('cvUserName').value,
-            email: document.getElementById('cvUserEmail').value,
-            phone: document.getElementById('cvUserPhone').value,
-            message: document.getElementById('cvUserMessage').value,
-            time: new Date().toLocaleString()
+    function submitCvRequest() {
+        const data = {
+            name: document.getElementById('cvName').value,
+            email: document.getElementById('cvEmail').value,
+            phone: document.getElementById('cvPhone').value,
+            skills: document.getElementById('cvSkills').value,
+            timestamp: Date.now()
         };
-        database.ref('cv_requests').push(cvRequest);
-        alert('✅ Request sent! We will contact you soon.');
-        modal.style.display = 'none';
-        document.getElementById('cvUserName').value = '';
-        document.getElementById('cvUserEmail').value = '';
-        document.getElementById('cvUserPhone').value = '';
-        document.getElementById('cvUserMessage').value = '';
-    };
-    
-    // Tab switching
-    function initTabs() {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const tabId = btn.dataset.tab;
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-                document.getElementById(tabId).classList.add('active');
-            });
-        });
+        database.ref('cv_requests').push(data);
+        alert('✅ CV request submitted! We will email you the template.');
+        closeModal();
     }
     
-    createAdminToggle();
+    function closeModal() {
+        document.getElementById('createCvModal').style.display = 'none';
+    }
+    
+    // Show Create CV Modal on scroll
+    window.addEventListener('scroll', () => {
+        if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+            if(!localStorage.getItem('modalShown')) {
+                setTimeout(() => {
+                    document.getElementById('createCvModal').style.display = 'flex';
+                    localStorage.setItem('modalShown', 'true');
+                }, 2000);
+            }
+        }
+    });
+    
     loadPublicData();
-    setTimeout(initTabs, 500);
 </script>
 </body>
 </html>
